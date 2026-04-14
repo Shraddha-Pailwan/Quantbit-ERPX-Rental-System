@@ -1,0 +1,179 @@
+{
+  "doctype": "DocType",
+  "name": "Owner Agreement",
+  "module": "ERPX Rental",
+  "naming_rule": "Expression",
+  "autoname": "format:OA-{YYYY}-{#####}",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "description": "Third-party vehicle owner agreement defining payout model — % revenue share or fixed monthly amount.",
+  "fields": [
+    {
+      "fieldname": "section_owner",
+      "fieldtype": "Section Break",
+      "label": "Owner Details"
+    },
+    {
+      "fieldname": "owner_name",
+      "fieldtype": "Data",
+      "label": "Owner Name / Company",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "owner_type",
+      "fieldtype": "Select",
+      "label": "Owner Type",
+      "options": "Individual\nCompany",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "owner_mobile",
+      "fieldtype": "Data",
+      "label": "Owner Mobile",
+      "reqd": 1
+    },
+    {
+      "fieldname": "col_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "owner_email",
+      "fieldtype": "Data",
+      "label": "Owner Email",
+      "options": "Email"
+    },
+    {
+      "fieldname": "owner_id_cr",
+      "fieldtype": "Data",
+      "label": "Owner ID / CR Number"
+    },
+    {
+      "fieldname": "owner_address",
+      "fieldtype": "Small Text",
+      "label": "Owner Address"
+    },
+    {
+      "fieldname": "section_payout",
+      "fieldtype": "Section Break",
+      "label": "Payout Model"
+    },
+    {
+      "fieldname": "payout_model",
+      "fieldtype": "Select",
+      "label": "Payout Model",
+      "options": "Percentage of Gross Revenue\nFixed Monthly Amount\nPercentage of Net Revenue\nCustom",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "revenue_share_percent",
+      "fieldtype": "Percent",
+      "label": "Revenue Share (%)",
+      "depends_on": "eval:['Percentage of Gross Revenue','Percentage of Net Revenue'].includes(doc.payout_model)",
+      "description": "Applied to gross rental amount collected for this owner's vehicles"
+    },
+    {
+      "fieldname": "fixed_monthly_amount",
+      "fieldtype": "Currency",
+      "label": "Fixed Monthly Amount (OMR)",
+      "options": "currency",
+      "depends_on": "eval:doc.payout_model=='Fixed Monthly Amount'"
+    },
+    {
+      "fieldname": "col_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "payment_method",
+      "fieldtype": "Select",
+      "label": "Payment Method",
+      "options": "Bank Transfer\nCheque\nCash",
+      "default": "Bank Transfer"
+    },
+    {
+      "fieldname": "bank_name",
+      "fieldtype": "Data",
+      "label": "Bank Name"
+    },
+    {
+      "fieldname": "bank_iban",
+      "fieldtype": "Data",
+      "label": "Bank Account / IBAN"
+    },
+    {
+      "fieldname": "payout_frequency",
+      "fieldtype": "Select",
+      "label": "Payout Frequency",
+      "options": "Monthly\nQuarterly\nOn Demand",
+      "default": "Monthly"
+    },
+    {
+      "fieldname": "section_gl",
+      "fieldtype": "Section Break",
+      "label": "GL & Accounting"
+    },
+    {
+      "fieldname": "payout_expense_account",
+      "fieldtype": "Link",
+      "label": "GL Account — Payout Expense",
+      "options": "Account",
+      "description": "Dr this account when payout is generated. Default: 5100 Owner Payout Expense"
+    },
+    {
+      "fieldname": "col_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "erpnext_supplier",
+      "fieldtype": "Link",
+      "label": "ERPNext Supplier Link",
+      "options": "Supplier",
+      "description": "Link to ERPNext Supplier for payment entries"
+    },
+    {
+      "fieldname": "section_dates",
+      "fieldtype": "Section Break",
+      "label": "Agreement Dates"
+    },
+    {
+      "fieldname": "agreement_start_date",
+      "fieldtype": "Date",
+      "label": "Agreement Start Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "agreement_end_date",
+      "fieldtype": "Date",
+      "label": "Agreement End Date"
+    },
+    {
+      "fieldname": "col_break_4",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "agreement_status",
+      "fieldtype": "Select",
+      "label": "Agreement Status",
+      "options": "Active\nExpired\nTerminated\nDraft",
+      "default": "Active",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "special_terms",
+      "fieldtype": "Text Editor",
+      "label": "Special Terms & Conditions"
+    }
+  ],
+  "permissions": [
+    {
+      "role": "Fleet Manager",
+      "read": 1, "write": 1, "create": 1, "submit": 1, "cancel": 1
+    },
+    {
+      "role": "System Manager",
+      "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1, "cancel": 1
+    }
+  ]
+}

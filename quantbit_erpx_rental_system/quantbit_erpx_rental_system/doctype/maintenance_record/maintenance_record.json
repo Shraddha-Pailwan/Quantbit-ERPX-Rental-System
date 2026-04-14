@@ -1,0 +1,301 @@
+{
+ "actions": [],
+ "autoname": "format:MR-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:13.908721",
+ "description": "Vehicle maintenance and repair job card. Posts to vehicle cost centre. Links to ERPNext Purchase Invoice for vendor bill.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "vehicle",
+  "maintenance_type",
+  "maintenance_mode",
+  "col_break_1",
+  "vendor",
+  "service_date",
+  "expected_completion_date",
+  "actual_completion_date",
+  "col_break_2",
+  "odometer_at_service",
+  "downtime_days",
+  "maintenance_status",
+  "section_contract",
+  "linked_rental_contract",
+  "billing_suspended",
+  "col_break_3",
+  "replacement_vehicle",
+  "section_costs",
+  "vendor_invoice_number",
+  "labour_charges",
+  "parts_cost",
+  "total_cost",
+  "col_break_4",
+  "erpnext_purchase_invoice",
+  "cost_centre",
+  "maintenance_expense_account",
+  "section_next_service",
+  "next_service_date",
+  "next_service_km",
+  "col_break_5",
+  "preferred_vendor_next",
+  "section_description",
+  "work_description",
+  "parts_replaced",
+  "issues_found",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Vehicle / Plate",
+   "options": "Vehicle Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "maintenance_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Service / Maintenance Type",
+   "options": "Routine Service\nOil Change\nTyre Replacement\nBrake Service\nBattery Replacement\nAC Service\nElectrical\nBody Repair\nAccident Repair\nBreakdown\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "maintenance_mode",
+   "fieldtype": "Select",
+   "label": "Mode",
+   "options": "Scheduled \u2014 planned service\nUnscheduled \u2014 breakdown or issue",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "vendor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Workshop Vendor",
+   "options": "Supplier",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "service_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Service Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expected_completion_date",
+   "fieldtype": "Date",
+   "label": "Expected Completion Date"
+  },
+  {
+   "fieldname": "actual_completion_date",
+   "fieldtype": "Date",
+   "label": "Actual Completion Date"
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "odometer_at_service",
+   "fieldtype": "Float",
+   "label": "Odometer at Service (KM)",
+   "reqd": 1
+  },
+  {
+   "description": "Days vehicle unavailable for rental due to this service",
+   "fieldname": "downtime_days",
+   "fieldtype": "Float",
+   "label": "Downtime (Days)"
+  },
+  {
+   "default": "In Progress",
+   "fieldname": "maintenance_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Job Status",
+   "options": "In Progress\nWaiting Parts\nComplete\nCancelled"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_contract",
+   "fieldtype": "Section Break",
+   "label": "Contract Impact"
+  },
+  {
+   "description": "If vehicle was on rent when breakdown occurred",
+   "fieldname": "linked_rental_contract",
+   "fieldtype": "Link",
+   "label": "Linked Rental Contract",
+   "options": "Rental Contract"
+  },
+  {
+   "default": "0",
+   "description": "Stop billing customer while vehicle is in workshop",
+   "fieldname": "billing_suspended",
+   "fieldtype": "Check",
+   "label": "Billing Suspended During Repair?"
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "replacement_vehicle",
+   "fieldtype": "Link",
+   "label": "Replacement Vehicle Provided",
+   "options": "Vehicle Master"
+  },
+  {
+   "fieldname": "section_costs",
+   "fieldtype": "Section Break",
+   "label": "Costs"
+  },
+  {
+   "fieldname": "vendor_invoice_number",
+   "fieldtype": "Data",
+   "label": "Vendor Invoice No."
+  },
+  {
+   "fieldname": "labour_charges",
+   "fieldtype": "Currency",
+   "label": "Labour Charges (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "parts_cost",
+   "fieldtype": "Currency",
+   "label": "Parts Cost (OMR)",
+   "options": "currency"
+  },
+  {
+   "description": "Auto = Labour + Parts",
+   "fieldname": "total_cost",
+   "fieldtype": "Currency",
+   "label": "Total Cost (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Link to PINV for GL posting \u2014 Dr Maintenance Expense 5200  Cr Accounts Payable",
+   "fieldname": "erpnext_purchase_invoice",
+   "fieldtype": "Link",
+   "label": "ERPNext Purchase Invoice",
+   "options": "Purchase Invoice"
+  },
+  {
+   "description": "Auto from vehicle record",
+   "fetch_from": "vehicle.cost_centre",
+   "fieldname": "cost_centre",
+   "fieldtype": "Link",
+   "label": "Cost Centre",
+   "options": "Account",
+   "read_only": 1
+  },
+  {
+   "description": "Default: 5200 Maintenance Expense",
+   "fieldname": "maintenance_expense_account",
+   "fieldtype": "Link",
+   "label": "GL Expense Account",
+   "options": "Account"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_next_service",
+   "fieldtype": "Section Break",
+   "label": "Next Service Schedule"
+  },
+  {
+   "fieldname": "next_service_date",
+   "fieldtype": "Date",
+   "label": "Next Service Date"
+  },
+  {
+   "fieldname": "next_service_km",
+   "fieldtype": "Float",
+   "label": "Next Service at KM"
+  },
+  {
+   "fieldname": "col_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "preferred_vendor_next",
+   "fieldtype": "Link",
+   "label": "Preferred Vendor for Next Service",
+   "options": "Supplier"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_description",
+   "fieldtype": "Section Break",
+   "label": "Work Description"
+  },
+  {
+   "fieldname": "work_description",
+   "fieldtype": "Text Editor",
+   "label": "Work Performed / Description"
+  },
+  {
+   "fieldname": "parts_replaced",
+   "fieldtype": "Text Editor",
+   "label": "Parts Replaced"
+  },
+  {
+   "fieldname": "issues_found",
+   "fieldtype": "Small Text",
+   "label": "Issues Found / Recommendations"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Maintenance Record",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:05.340822",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Maintenance Record",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,302 @@
+{
+ "actions": [],
+ "autoname": "format:VS-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:37.387577",
+ "description": "Vehicle disposal record \u2014 outright sale, trade-in, auction, or write-off. Closes ERPNext Fixed Asset, posts gain/loss GL entry.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "vehicle",
+  "disposal_type",
+  "disposal_date",
+  "col_break_1",
+  "disposal_reason",
+  "final_odometer",
+  "condition_at_disposal",
+  "section_financials",
+  "sale_price",
+  "book_value_at_disposal",
+  "gain_loss",
+  "col_break_2",
+  "gain_gl_account",
+  "loss_gl_account",
+  "erpnext_asset",
+  "section_buyer",
+  "buyer_name",
+  "buyer_id_cr",
+  "buyer_contact",
+  "col_break_3",
+  "sale_invoice",
+  "disposal_journal_entry",
+  "section_tradein",
+  "new_vehicle",
+  "trade_in_allowance",
+  "dealer_supplier",
+  "col_break_4",
+  "new_vehicle_cost",
+  "net_cash_payment",
+  "section_dereg",
+  "deregistration_date",
+  "rop_plate_surrendered",
+  "deregistration_certificate",
+  "col_break_5",
+  "final_rop_clearance",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vehicle / Plate",
+   "options": "Vehicle Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "disposal_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Disposal Type",
+   "options": "Outright Sale\nTrade-In\nAuction\nWrite-Off\nDonation / Transfer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "disposal_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Disposal Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "disposal_reason",
+   "fieldtype": "Select",
+   "label": "Reason for Disposal",
+   "options": "Age \u2014 exceeded useful life\nHigh mileage \u2014 uneconomical\nAccident \u2014 total loss\nUpgrade \u2014 replacing with new model\nFleet size reduction\nOther"
+  },
+  {
+   "fieldname": "final_odometer",
+   "fieldtype": "Float",
+   "label": "Final Odometer (KM)"
+  },
+  {
+   "fieldname": "condition_at_disposal",
+   "fieldtype": "Select",
+   "label": "Condition at Disposal",
+   "options": "Excellent\nGood \u2014 minor wear\nFair \u2014 some damage\nPoor \u2014 significant damage\nWrite-Off \u2014 non-operational"
+  },
+  {
+   "fieldname": "section_financials",
+   "fieldtype": "Section Break",
+   "label": "Financial Details"
+  },
+  {
+   "fieldname": "sale_price",
+   "fieldtype": "Currency",
+   "label": "Sale Price (OMR)",
+   "options": "currency"
+  },
+  {
+   "description": "Auto from ERPNext Fixed Asset depreciation schedule",
+   "fieldname": "book_value_at_disposal",
+   "fieldtype": "Currency",
+   "label": "Book Value at Disposal (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "description": "Auto = Sale Price \u2212 Book Value",
+   "fieldname": "gain_loss",
+   "fieldtype": "Currency",
+   "label": "Gain / (Loss) (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Default: 4200 Gain on Asset Disposal",
+   "fieldname": "gain_gl_account",
+   "fieldtype": "Link",
+   "label": "GL Account \u2014 Disposal Gain",
+   "options": "Account"
+  },
+  {
+   "description": "Default: 5600 Loss on Asset Disposal",
+   "fieldname": "loss_gl_account",
+   "fieldtype": "Link",
+   "label": "GL Account \u2014 Disposal Loss",
+   "options": "Account"
+  },
+  {
+   "fetch_from": "vehicle.erpnext_asset",
+   "fieldname": "erpnext_asset",
+   "fieldtype": "Link",
+   "label": "ERPNext Asset (to close)",
+   "options": "Asset",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:['Outright Sale','Trade-In','Auction'].includes(doc.disposal_type)",
+   "fieldname": "section_buyer",
+   "fieldtype": "Section Break",
+   "label": "Buyer Details"
+  },
+  {
+   "fieldname": "buyer_name",
+   "fieldtype": "Data",
+   "label": "Buyer Name"
+  },
+  {
+   "fieldname": "buyer_id_cr",
+   "fieldtype": "Data",
+   "label": "Buyer ID / CR No."
+  },
+  {
+   "fieldname": "buyer_contact",
+   "fieldtype": "Data",
+   "label": "Buyer Contact Mobile"
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Auto-created on submission",
+   "fieldname": "sale_invoice",
+   "fieldtype": "Link",
+   "label": "Sale Invoice (ERPNext SINV)",
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
+   "fieldname": "disposal_journal_entry",
+   "fieldtype": "Link",
+   "label": "Disposal Journal Entry",
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.disposal_type=='Trade-In'",
+   "fieldname": "section_tradein",
+   "fieldtype": "Section Break",
+   "label": "Trade-In Details"
+  },
+  {
+   "fieldname": "new_vehicle",
+   "fieldtype": "Link",
+   "label": "New Vehicle Acquired",
+   "options": "Vehicle Master"
+  },
+  {
+   "fieldname": "trade_in_allowance",
+   "fieldtype": "Currency",
+   "label": "Trade-In Allowance (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "dealer_supplier",
+   "fieldtype": "Link",
+   "label": "Dealer / Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "col_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "new_vehicle_cost",
+   "fieldtype": "Currency",
+   "label": "New Vehicle Cost (OMR)",
+   "options": "currency"
+  },
+  {
+   "description": "Auto = New Vehicle Cost \u2212 Trade-In Allowance",
+   "fieldname": "net_cash_payment",
+   "fieldtype": "Currency",
+   "label": "Net Cash Payment (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_dereg",
+   "fieldtype": "Section Break",
+   "label": "Deregistration"
+  },
+  {
+   "fieldname": "deregistration_date",
+   "fieldtype": "Date",
+   "label": "Deregistration Date"
+  },
+  {
+   "fieldname": "rop_plate_surrendered",
+   "fieldtype": "Select",
+   "label": "ROP Plate Surrendered?",
+   "options": "Yes \u2014 returned to ROP\nNo \u2014 transferred to buyer\nPending"
+  },
+  {
+   "fieldname": "deregistration_certificate",
+   "fieldtype": "Data",
+   "label": "Deregistration Certificate No."
+  },
+  {
+   "fieldname": "col_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "final_rop_clearance",
+   "fieldtype": "Select",
+   "label": "Final ROP Clearance Status",
+   "options": "Clear \u2014 no outstanding fines\nFines Settled Before Transfer"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Vehicle Disposal",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:00.529545",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Vehicle Disposal",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

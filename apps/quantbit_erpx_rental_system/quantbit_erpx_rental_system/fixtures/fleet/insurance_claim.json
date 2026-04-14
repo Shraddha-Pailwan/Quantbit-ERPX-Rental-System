@@ -1,0 +1,151 @@
+{
+  "doctype": "DocType",
+  "name": "Insurance Claim",
+  "module": "ERPX Rental",
+  "naming_rule": "Expression",
+  "autoname": "format:IC-{YYYY}-{#####}",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "description": "Vehicle insurance claim — linked to policy and vehicle, tracks claim amount, approval, and settlement GL entry.",
+  "fields": [
+    {
+      "fieldname": "vehicle",
+      "fieldtype": "Link",
+      "label": "Vehicle / Plate",
+      "options": "Vehicle Master",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "insurance_policy",
+      "fieldtype": "Link",
+      "label": "Insurance Policy",
+      "options": "Insurance Policy",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "claim_type",
+      "fieldtype": "Select",
+      "label": "Claim Type",
+      "options": "Accident\nTheft\nNatural Disaster\nThird Party Damage\nOwn Damage\nFire",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "col_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "incident_date",
+      "fieldtype": "Date",
+      "label": "Incident Date",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "claim_date",
+      "fieldtype": "Date",
+      "label": "Claim Filed Date",
+      "default": "Today"
+    },
+    {
+      "fieldname": "claim_status",
+      "fieldtype": "Select",
+      "label": "Claim Status",
+      "options": "Filed\nUnder Review\nApproved\nRejected\nSettled\nWithdrawn",
+      "default": "Filed",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "section_details",
+      "fieldtype": "Section Break",
+      "label": "Incident & Claim Details"
+    },
+    {
+      "fieldname": "rop_report_number",
+      "fieldtype": "Data",
+      "label": "ROP / Police Report Number",
+      "description": "Police report reference if accident or theft"
+    },
+    {
+      "fieldname": "incident_description",
+      "fieldtype": "Text Editor",
+      "label": "Incident Description"
+    },
+    {
+      "fieldname": "linked_rental_contract",
+      "fieldtype": "Link",
+      "label": "Rental Contract (if vehicle was on rent)",
+      "options": "Rental Contract"
+    },
+    {
+      "fieldname": "col_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "claim_amount",
+      "fieldtype": "Currency",
+      "label": "Claim Amount (OMR)",
+      "options": "currency",
+      "reqd": 1
+    },
+    {
+      "fieldname": "approved_amount",
+      "fieldtype": "Currency",
+      "label": "Approved Amount (OMR)",
+      "options": "currency"
+    },
+    {
+      "fieldname": "deductible_applied",
+      "fieldtype": "Currency",
+      "label": "Deductible / Excess Applied (OMR)",
+      "options": "currency",
+      "fetch_from": "insurance_policy.deductible_excess"
+    },
+    {
+      "fieldname": "section_settlement",
+      "fieldtype": "Section Break",
+      "label": "Settlement",
+      "collapsible": 1
+    },
+    {
+      "fieldname": "settlement_date",
+      "fieldtype": "Date",
+      "label": "Settlement Date"
+    },
+    {
+      "fieldname": "settlement_amount",
+      "fieldtype": "Currency",
+      "label": "Settlement Amount Received (OMR)",
+      "options": "currency"
+    },
+    {
+      "fieldname": "col_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "settlement_gl_account",
+      "fieldtype": "Link",
+      "label": "GL Account (Settlement Credit)",
+      "options": "Account"
+    },
+    {
+      "fieldname": "settlement_journal_entry",
+      "fieldtype": "Link",
+      "label": "Settlement Journal Entry",
+      "options": "Journal Entry",
+      "read_only": 1
+    },
+    {
+      "fieldname": "linked_maintenance_record",
+      "fieldtype": "Link",
+      "label": "Linked Maintenance / Repair Job Card",
+      "options": "Maintenance Record"
+    }
+  ],
+  "permissions": [
+    {"role": "Fleet Manager", "read": 1, "write": 1, "create": 1, "submit": 1, "cancel": 1},
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "submit": 1, "cancel": 1, "delete": 1}
+  ]
+}

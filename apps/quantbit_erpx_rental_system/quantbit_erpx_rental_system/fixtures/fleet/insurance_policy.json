@@ -1,0 +1,158 @@
+{
+  "doctype": "DocType",
+  "name": "Insurance Policy",
+  "module": "ERPX Rental",
+  "naming_rule": "Expression",
+  "autoname": "format:INS-{YYYY}-{#####}",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "description": "Full vehicle insurance policy record — separate from Vehicle Master for multi-policy tracking and claims management.",
+  "fields": [
+    {
+      "fieldname": "vehicle",
+      "fieldtype": "Link",
+      "label": "Vehicle / Plate",
+      "options": "Vehicle Master",
+      "reqd": 1,
+      "in_list_view": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "insurance_type",
+      "fieldtype": "Select",
+      "label": "Insurance Type",
+      "options": "Full Cover / Comprehensive\nThird Party Liability\nOwn Damage Only",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "insurer_name",
+      "fieldtype": "Data",
+      "label": "Insurance Company / Insurer",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "policy_number",
+      "fieldtype": "Data",
+      "label": "Policy Number",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "col_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "policy_start_date",
+      "fieldtype": "Date",
+      "label": "Policy Start Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "policy_expiry_date",
+      "fieldtype": "Date",
+      "label": "Policy Expiry Date",
+      "reqd": 1,
+      "in_list_view": 1,
+      "description": "WhatsApp alert sent 30 days before expiry"
+    },
+    {
+      "fieldname": "policy_status",
+      "fieldtype": "Select",
+      "label": "Policy Status",
+      "options": "Active\nExpiring Soon\nExpired\nCancelled\nRenewed",
+      "default": "Active",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "renewal_alert_days",
+      "fieldtype": "Int",
+      "label": "Renewal Alert Days Before Expiry",
+      "default": "30"
+    },
+    {
+      "fieldname": "section_financial",
+      "fieldtype": "Section Break",
+      "label": "Premium & Coverage"
+    },
+    {
+      "fieldname": "annual_premium",
+      "fieldtype": "Currency",
+      "label": "Annual Premium (OMR)",
+      "options": "currency",
+      "reqd": 1
+    },
+    {
+      "fieldname": "payment_frequency",
+      "fieldtype": "Select",
+      "label": "Premium Payment Frequency",
+      "options": "Annual (one payment)\nSemi-Annual (2 payments)\nQuarterly (4 payments)",
+      "default": "Annual (one payment)"
+    },
+    {
+      "fieldname": "next_premium_due",
+      "fieldtype": "Date",
+      "label": "Next Premium Payment Due"
+    },
+    {
+      "fieldname": "col_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "coverage_amount",
+      "fieldtype": "Currency",
+      "label": "Coverage / Insured Value (OMR)",
+      "options": "currency",
+      "description": "Market or agreed insured value of the vehicle"
+    },
+    {
+      "fieldname": "deductible_excess",
+      "fieldtype": "Currency",
+      "label": "Deductible / Excess per Claim (OMR)",
+      "options": "currency"
+    },
+    {
+      "fieldname": "section_contact",
+      "fieldtype": "Section Break",
+      "label": "Insurer Contact",
+      "collapsible": 1
+    },
+    {
+      "fieldname": "insurer_contact_name",
+      "fieldtype": "Data",
+      "label": "Contact / Agent Name"
+    },
+    {
+      "fieldname": "insurer_phone",
+      "fieldtype": "Data",
+      "label": "Insurer Phone"
+    },
+    {
+      "fieldname": "insurer_email",
+      "fieldtype": "Data",
+      "label": "Insurer Email",
+      "options": "Email"
+    },
+    {
+      "fieldname": "col_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "insurance_expense_account",
+      "fieldtype": "Link",
+      "label": "GL Expense Account",
+      "options": "Account",
+      "description": "Default: 5300 Insurance Expense"
+    },
+    {
+      "fieldname": "coverage_notes",
+      "fieldtype": "Small Text",
+      "label": "Coverage Notes / Exclusions"
+    }
+  ],
+  "permissions": [
+    {"role": "Fleet Manager", "read": 1, "write": 1, "create": 1, "submit": 1, "cancel": 1},
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "submit": 1, "cancel": 1, "delete": 1}
+  ]
+}

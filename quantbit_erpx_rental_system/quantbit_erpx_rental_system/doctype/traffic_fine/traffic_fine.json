@@ -1,0 +1,256 @@
+{
+ "actions": [],
+ "autoname": "format:TF-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:31.189664",
+ "description": "ROP (Royal Oman Police) traffic fine \u2014 auto-matched to rental contract by vehicle plate + fine date. Recovery charged to customer or absorbed internally.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "rop_reference_number",
+  "vehicle",
+  "fine_date",
+  "fine_time",
+  "col_break_1",
+  "violation_type",
+  "fine_amount",
+  "fine_location",
+  "col_break_2",
+  "rop_officer_id",
+  "import_batch",
+  "section_matching",
+  "matched_contract",
+  "customer_at_fine_date",
+  "match_method",
+  "col_break_3",
+  "recovery_decision",
+  "whatsapp_alert_sent",
+  "whatsapp_sent_date",
+  "section_recovery",
+  "recovery_invoice",
+  "recovery_status",
+  "col_break_4",
+  "internal_gl_account",
+  "cost_centre",
+  "internal_notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "description": "Unique ROP fine reference \u2014 prevents duplicate import",
+   "fieldname": "rop_reference_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "ROP Reference Number / \u0631\u0642\u0645 \u0627\u0644\u0645\u062e\u0627\u0644\u0641\u0629",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Vehicle / Plate",
+   "options": "Vehicle Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fine_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Fine Date / \u062a\u0627\u0631\u064a\u062e \u0627\u0644\u0645\u062e\u0627\u0644\u0641\u0629",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fine_time",
+   "fieldtype": "Time",
+   "label": "Fine Time"
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "violation_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Violation Type / \u0646\u0648\u0639 \u0627\u0644\u0645\u062e\u0627\u0644\u0641\u0629",
+   "options": "Speeding\nRed Light\nParking Violation\nMobile Phone Use\nSeatbelt\nWrong Lane\nOverloading\nDriving Without Licence\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fine_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Fine Amount (OMR) / \u0645\u0628\u0644\u063a \u0627\u0644\u0645\u062e\u0627\u0644\u0641\u0629",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fine_location",
+   "fieldtype": "Data",
+   "label": "Fine Location / Road"
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rop_officer_id",
+   "fieldtype": "Data",
+   "label": "ROP Officer ID / Badge"
+  },
+  {
+   "description": "Reference to the CSV import batch this fine came from",
+   "fieldname": "import_batch",
+   "fieldtype": "Link",
+   "label": "ROP Import Batch",
+   "options": "ROP Import Log",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_matching",
+   "fieldtype": "Section Break",
+   "label": "Contract Matching"
+  },
+  {
+   "description": "Auto-matched: contract where this vehicle was rented on the fine date",
+   "fieldname": "matched_contract",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Matched Rental Contract",
+   "options": "Rental Contract"
+  },
+  {
+   "fetch_from": "matched_contract.customer",
+   "fieldname": "customer_at_fine_date",
+   "fieldtype": "Link",
+   "label": "Customer at Time of Fine",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "match_method",
+   "fieldtype": "Select",
+   "label": "Match Method",
+   "options": "Auto-Matched\nManually Assigned\nNo Match - Internal",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "recovery_decision",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Recovery Decision",
+   "options": "Charge to Customer\nAbsorb Internally\nUnder Dispute",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "whatsapp_alert_sent",
+   "fieldtype": "Check",
+   "label": "WhatsApp Alert Sent to Customer?"
+  },
+  {
+   "depends_on": "eval:doc.whatsapp_alert_sent==1",
+   "fieldname": "whatsapp_sent_date",
+   "fieldtype": "Date",
+   "label": "WhatsApp Sent Date"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_recovery",
+   "fieldtype": "Section Break",
+   "label": "Recovery & GL"
+  },
+  {
+   "description": "Auto-created when charged to customer: credit Fine Recovery Income 4110",
+   "fieldname": "recovery_invoice",
+   "fieldtype": "Link",
+   "label": "Recovery Sales Invoice",
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
+   "default": "Pending",
+   "fieldname": "recovery_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Recovery Status",
+   "options": "Pending\nInvoiced\nCollected\nWritten Off"
+  },
+  {
+   "fieldname": "col_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.recovery_decision=='Absorb Internally'",
+   "description": "Default: 5400 Fine Expense",
+   "fieldname": "internal_gl_account",
+   "fieldtype": "Link",
+   "label": "GL Account (if internal / absorbed)",
+   "options": "Account"
+  },
+  {
+   "description": "Auto from vehicle record",
+   "fieldname": "cost_centre",
+   "fieldtype": "Link",
+   "label": "Cost Centre",
+   "options": "Vehicle"
+  },
+  {
+   "fieldname": "internal_notes",
+   "fieldtype": "Small Text",
+   "label": "Internal Notes"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Traffic Fine",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:08.071245",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Traffic Fine",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Billing Staff",
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

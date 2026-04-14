@@ -1,0 +1,555 @@
+{
+ "actions": [],
+ "autoname": "format:CK-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:00.351406",
+ "description": "Extended customer KYC for rental \u2014 linked to ERPNext Customer. Covers Individual, Corporate, and Broker account types with GCC-specific identity fields.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_type",
+  "customer",
+  "customer_type",
+  "kyc_status",
+  "col_break_1",
+  "blacklist_reason",
+  "blacklist_notes",
+  "section_personal",
+  "full_name",
+  "date_of_birth",
+  "gender",
+  "nationality",
+  "col_break_2",
+  "country_of_residence",
+  "mobile_number",
+  "email_address",
+  "col_break_3",
+  "residential_address",
+  "work_address",
+  "section_identity",
+  "id_document_type",
+  "id_number",
+  "id_expiry_date",
+  "col_break_4",
+  "id_issuing_country",
+  "visa_type",
+  "visa_expiry_date",
+  "col_break_5",
+  "sponsor_employer",
+  "iqama_number",
+  "iqama_expiry_date",
+  "section_licence",
+  "licence_number",
+  "licence_category",
+  "licence_expiry_date",
+  "col_break_6",
+  "licence_issuing_country",
+  "licence_issue_date",
+  "driving_experience",
+  "section_corporate",
+  "company_name",
+  "cr_number",
+  "vat_registration_number",
+  "col_break_7",
+  "industry",
+  "company_main_line",
+  "company_email",
+  "col_break_8",
+  "registered_address",
+  "billing_address",
+  "section_signatory",
+  "signatory_name",
+  "signatory_title",
+  "signatory_mobile",
+  "col_break_9",
+  "signatory_email",
+  "authorization_document",
+  "authorization_valid_until",
+  "section_broker",
+  "iata_licence_number",
+  "commission_type",
+  "commission_rate",
+  "col_break_10",
+  "commission_gl_account",
+  "sub_customer_billing",
+  "preferred_vehicle_categories",
+  "section_billing",
+  "credit_limit",
+  "credit_period_days",
+  "billing_mode",
+  "col_break_11",
+  "invoice_grouping",
+  "pdc_required",
+  "pdc_advance_months",
+  "col_break_12",
+  "risk_category",
+  "internal_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_type",
+   "fieldtype": "Section Break",
+   "label": "Customer Type"
+  },
+  {
+   "description": "Link to the ERPNext Customer master record",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "ERPNext Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer Type",
+   "options": "Individual\nCorporate\nBroker / Travel Agency",
+   "reqd": 1
+  },
+  {
+   "default": "Active",
+   "fieldname": "kyc_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "KYC Status",
+   "options": "Active\nBlacklisted\nSuspended\nUnder Review"
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.kyc_status=='Blacklisted'",
+   "fieldname": "blacklist_reason",
+   "fieldtype": "Select",
+   "label": "Blacklist Reason",
+   "options": "\nCheque Bounce\nNon-Payment\nVehicle Damage\nFraudulent ID\nROP Block\nOther"
+  },
+  {
+   "depends_on": "eval:doc.kyc_status=='Blacklisted'",
+   "fieldname": "blacklist_notes",
+   "fieldtype": "Small Text",
+   "label": "Blacklist Notes"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "section_personal",
+   "fieldtype": "Section Break",
+   "label": "Personal Details"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Full Name / \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth / \u062a\u0627\u0631\u064a\u062e \u0627\u0644\u0645\u064a\u0644\u0627\u062f"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "label": "Gender",
+   "options": "Male\nFemale"
+  },
+  {
+   "fieldname": "nationality",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Nationality / \u0627\u0644\u062c\u0646\u0633\u064a\u0629"
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "country_of_residence",
+   "fieldtype": "Data",
+   "label": "Country of Residence"
+  },
+  {
+   "description": "WhatsApp alerts will be sent to this number",
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number / \u0631\u0642\u0645 \u0627\u0644\u062c\u0648\u0627\u0644",
+   "reqd": 1
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "label": "Email Address",
+   "options": "Email"
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "residential_address",
+   "fieldtype": "Small Text",
+   "label": "Residential Address / \u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0633\u0643\u0646\u064a"
+  },
+  {
+   "fieldname": "work_address",
+   "fieldtype": "Small Text",
+   "label": "Work / Office Address / \u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0639\u0645\u0644"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "section_identity",
+   "fieldtype": "Section Break",
+   "label": "Identity Documents"
+  },
+  {
+   "fieldname": "id_document_type",
+   "fieldtype": "Select",
+   "label": "Document Type",
+   "options": "National ID - Omani\nPassport\nIqama (Resident Permit)\nGCC National ID\nCivil ID"
+  },
+  {
+   "description": "Iqama = resident permit for GCC expatriates",
+   "fieldname": "id_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "ID / Passport / Iqama Number"
+  },
+  {
+   "description": "Alert sent 14 days before expiry",
+   "fieldname": "id_expiry_date",
+   "fieldtype": "Date",
+   "label": "ID Expiry Date"
+  },
+  {
+   "fieldname": "col_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "id_issuing_country",
+   "fieldtype": "Data",
+   "label": "Issuing Country"
+  },
+  {
+   "fieldname": "visa_type",
+   "fieldtype": "Select",
+   "label": "Visa Type",
+   "options": "N/A - Citizen\nEmployment / Work\nTourist / Visit\nBusiness\nGCC Resident"
+  },
+  {
+   "fieldname": "visa_expiry_date",
+   "fieldtype": "Date",
+   "label": "Visa Expiry Date"
+  },
+  {
+   "fieldname": "col_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "For work visa holders",
+   "fieldname": "sponsor_employer",
+   "fieldtype": "Data",
+   "label": "Sponsor / Employer"
+  },
+  {
+   "description": "Separate from passport \u2014 GCC resident permit number",
+   "fieldname": "iqama_number",
+   "fieldtype": "Data",
+   "label": "Iqama Number / \u0631\u0642\u0645 \u0627\u0644\u0625\u0642\u0627\u0645\u0629"
+  },
+  {
+   "fieldname": "iqama_expiry_date",
+   "fieldtype": "Date",
+   "label": "Iqama Expiry Date"
+  },
+  {
+   "depends_on": "eval:doc.customer_type=='Individual'",
+   "fieldname": "section_licence",
+   "fieldtype": "Section Break",
+   "label": "Driving Licence / \u0631\u062e\u0635\u0629 \u0627\u0644\u0642\u064a\u0627\u062f\u0629"
+  },
+  {
+   "fieldname": "licence_number",
+   "fieldtype": "Data",
+   "label": "Driving Licence Number"
+  },
+  {
+   "fieldname": "licence_category",
+   "fieldtype": "Select",
+   "label": "Licence Category (GCC)",
+   "options": "Light Vehicle - Category A\nHeavy Vehicle - Category B\nMotorcycle - Category D\nInternational Driving Permit"
+  },
+  {
+   "description": "Cannot create a rental contract if expired",
+   "fieldname": "licence_expiry_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Licence Expiry Date / \u0627\u0646\u062a\u0647\u0627\u0621 \u0627\u0644\u0631\u062e\u0635\u0629"
+  },
+  {
+   "fieldname": "col_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "licence_issuing_country",
+   "fieldtype": "Data",
+   "label": "Licence Issuing Country"
+  },
+  {
+   "fieldname": "licence_issue_date",
+   "fieldtype": "Date",
+   "label": "Licence Issue Date"
+  },
+  {
+   "fieldname": "driving_experience",
+   "fieldtype": "Select",
+   "label": "Years of Driving Experience",
+   "options": "Less than 1 year\n1-3 years\n3-5 years\n5-10 years\n10+ years"
+  },
+  {
+   "depends_on": "eval:['Corporate','Broker / Travel Agency'].includes(doc.customer_type)",
+   "fieldname": "section_corporate",
+   "fieldtype": "Section Break",
+   "label": "Company Registration"
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Company / Agency Name"
+  },
+  {
+   "fieldname": "cr_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Commercial Registration (CR) No."
+  },
+  {
+   "fieldname": "vat_registration_number",
+   "fieldtype": "Data",
+   "label": "VAT / Tax Registration No."
+  },
+  {
+   "fieldname": "col_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "industry",
+   "fieldtype": "Select",
+   "label": "Industry / Business Type",
+   "options": "Oil & Gas\nHospitality\nConstruction\nGovernment\nLogistics\nHealthcare\nRetail\nTravel & Tourism\nOther"
+  },
+  {
+   "fieldname": "company_main_line",
+   "fieldtype": "Data",
+   "label": "Company Main Line"
+  },
+  {
+   "fieldname": "company_email",
+   "fieldtype": "Data",
+   "label": "Company Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "col_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "registered_address",
+   "fieldtype": "Small Text",
+   "label": "Registered Address"
+  },
+  {
+   "fieldname": "billing_address",
+   "fieldtype": "Small Text",
+   "label": "Billing Address (if different)"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.customer_type=='Corporate'",
+   "fieldname": "section_signatory",
+   "fieldtype": "Section Break",
+   "label": "Authorised Signatory"
+  },
+  {
+   "fieldname": "signatory_name",
+   "fieldtype": "Data",
+   "label": "Signatory Full Name"
+  },
+  {
+   "fieldname": "signatory_title",
+   "fieldtype": "Data",
+   "label": "Designation / Title"
+  },
+  {
+   "fieldname": "signatory_mobile",
+   "fieldtype": "Data",
+   "label": "Signatory Mobile"
+  },
+  {
+   "fieldname": "col_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "signatory_email",
+   "fieldtype": "Data",
+   "label": "Signatory Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "authorization_document",
+   "fieldtype": "Data",
+   "label": "Authorization Document No."
+  },
+  {
+   "fieldname": "authorization_valid_until",
+   "fieldtype": "Date",
+   "label": "Authorization Valid Until"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.customer_type=='Broker / Travel Agency'",
+   "fieldname": "section_broker",
+   "fieldtype": "Section Break",
+   "label": "Commission & Broker Settings"
+  },
+  {
+   "fieldname": "iata_licence_number",
+   "fieldtype": "Data",
+   "label": "IATA / Tourism Licence No."
+  },
+  {
+   "fieldname": "commission_type",
+   "fieldtype": "Select",
+   "label": "Commission Type",
+   "options": "Percentage of Revenue\nFixed Amount per Contract\nTiered - Volume Based"
+  },
+  {
+   "fieldname": "commission_rate",
+   "fieldtype": "Percent",
+   "label": "Commission Rate (%)"
+  },
+  {
+   "fieldname": "col_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "commission_gl_account",
+   "fieldtype": "Link",
+   "label": "Commission GL Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "sub_customer_billing",
+   "fieldtype": "Select",
+   "label": "Sub-Customer Billing",
+   "options": "Invoice to Broker\nInvoice to End Customer (Broker CC'd)"
+  },
+  {
+   "fieldname": "preferred_vehicle_categories",
+   "fieldtype": "Data",
+   "label": "Preferred Vehicle Categories"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_billing",
+   "fieldtype": "Section Break",
+   "label": "Account & Billing Settings"
+  },
+  {
+   "default": "0",
+   "description": "0 = pay in advance, no credit extended",
+   "fieldname": "credit_limit",
+   "fieldtype": "Currency",
+   "label": "Credit Limit (OMR)",
+   "options": "currency"
+  },
+  {
+   "default": "0",
+   "fieldname": "credit_period_days",
+   "fieldtype": "Int",
+   "label": "Credit Period (Days)"
+  },
+  {
+   "default": "Per Contract",
+   "fieldname": "billing_mode",
+   "fieldtype": "Select",
+   "label": "Billing Mode",
+   "options": "Per Contract\nConsolidated Monthly\nAdvance\nCustom Schedule"
+  },
+  {
+   "fieldname": "col_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "invoice_grouping",
+   "fieldtype": "Select",
+   "label": "Invoice Grouping",
+   "options": "All contracts in one invoice\nGroup by vehicle category\nGroup by department"
+  },
+  {
+   "default": "0",
+   "fieldname": "pdc_required",
+   "fieldtype": "Check",
+   "label": "PDC Required?"
+  },
+  {
+   "default": "3",
+   "depends_on": "eval:doc.pdc_required==1",
+   "fieldname": "pdc_advance_months",
+   "fieldtype": "Int",
+   "label": "PDC Advance Months"
+  },
+  {
+   "fieldname": "col_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Low",
+   "fieldname": "risk_category",
+   "fieldtype": "Select",
+   "label": "Risk Category",
+   "options": "Low\nMedium\nHigh"
+  },
+  {
+   "fieldname": "internal_notes",
+   "fieldtype": "Small Text",
+   "label": "Internal Notes"
+  }
+ ],
+ "links": [],
+ "modified": "2026-04-14 13:55:07.292562",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Customer KYC",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Billing Staff",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

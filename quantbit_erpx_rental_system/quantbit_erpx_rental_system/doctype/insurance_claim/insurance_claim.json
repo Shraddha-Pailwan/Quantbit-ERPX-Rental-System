@@ -1,0 +1,211 @@
+{
+ "actions": [],
+ "autoname": "format:IC-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:10.135832",
+ "description": "Vehicle insurance claim \u2014 linked to policy and vehicle, tracks claim amount, approval, and settlement GL entry.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "vehicle",
+  "insurance_policy",
+  "claim_type",
+  "col_break_1",
+  "incident_date",
+  "claim_date",
+  "claim_status",
+  "section_details",
+  "rop_report_number",
+  "incident_description",
+  "linked_rental_contract",
+  "col_break_2",
+  "claim_amount",
+  "approved_amount",
+  "deductible_applied",
+  "section_settlement",
+  "settlement_date",
+  "settlement_amount",
+  "col_break_3",
+  "settlement_gl_account",
+  "settlement_journal_entry",
+  "linked_maintenance_record",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vehicle / Plate",
+   "options": "Vehicle Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "insurance_policy",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Insurance Policy",
+   "options": "Insurance Policy",
+   "reqd": 1
+  },
+  {
+   "fieldname": "claim_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Claim Type",
+   "options": "Accident\nTheft\nNatural Disaster\nThird Party Damage\nOwn Damage\nFire",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "incident_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Incident Date",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "claim_date",
+   "fieldtype": "Date",
+   "label": "Claim Filed Date"
+  },
+  {
+   "default": "Filed",
+   "fieldname": "claim_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Claim Status",
+   "options": "Filed\nUnder Review\nApproved\nRejected\nSettled\nWithdrawn"
+  },
+  {
+   "fieldname": "section_details",
+   "fieldtype": "Section Break",
+   "label": "Incident & Claim Details"
+  },
+  {
+   "description": "Police report reference if accident or theft",
+   "fieldname": "rop_report_number",
+   "fieldtype": "Data",
+   "label": "ROP / Police Report Number"
+  },
+  {
+   "fieldname": "incident_description",
+   "fieldtype": "Text Editor",
+   "label": "Incident Description"
+  },
+  {
+   "fieldname": "linked_rental_contract",
+   "fieldtype": "Link",
+   "label": "Rental Contract (if vehicle was on rent)",
+   "options": "Rental Contract"
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "claim_amount",
+   "fieldtype": "Currency",
+   "label": "Claim Amount (OMR)",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "approved_amount",
+   "fieldtype": "Currency",
+   "label": "Approved Amount (OMR)",
+   "options": "currency"
+  },
+  {
+   "fetch_from": "insurance_policy.deductible_excess",
+   "fieldname": "deductible_applied",
+   "fieldtype": "Currency",
+   "label": "Deductible / Excess Applied (OMR)",
+   "options": "currency"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_settlement",
+   "fieldtype": "Section Break",
+   "label": "Settlement"
+  },
+  {
+   "fieldname": "settlement_date",
+   "fieldtype": "Date",
+   "label": "Settlement Date"
+  },
+  {
+   "fieldname": "settlement_amount",
+   "fieldtype": "Currency",
+   "label": "Settlement Amount Received (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "settlement_gl_account",
+   "fieldtype": "Link",
+   "label": "GL Account (Settlement Credit)",
+   "options": "Account"
+  },
+  {
+   "fieldname": "settlement_journal_entry",
+   "fieldtype": "Link",
+   "label": "Settlement Journal Entry",
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "linked_maintenance_record",
+   "fieldtype": "Link",
+   "label": "Linked Maintenance / Repair Job Card",
+   "options": "Maintenance Record"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Insurance Claim",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:06.355441",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Insurance Claim",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

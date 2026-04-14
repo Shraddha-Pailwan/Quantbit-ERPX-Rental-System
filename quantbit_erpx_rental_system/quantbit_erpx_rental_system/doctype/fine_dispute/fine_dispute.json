@@ -1,0 +1,175 @@
+{
+ "actions": [],
+ "autoname": "format:FD-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:05.575064",
+ "description": "Disputed traffic fine \u2014 investigation workflow with resolution decision (absorb/charge/escalate to ROP).",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "traffic_fine",
+  "vehicle",
+  "customer",
+  "col_break_1",
+  "dispute_date",
+  "dispute_raised_by",
+  "dispute_status",
+  "section_reason",
+  "dispute_reason",
+  "dispute_details",
+  "col_break_2",
+  "investigation_notes",
+  "section_resolution",
+  "resolution_decision",
+  "resolution_date",
+  "resolved_by",
+  "resolution_notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "traffic_fine",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Traffic Fine",
+   "options": "Traffic Fine",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "traffic_fine.vehicle",
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vehicle",
+   "options": "Vehicle Master",
+   "read_only": 1
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "dispute_date",
+   "fieldtype": "Date",
+   "label": "Dispute Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dispute_raised_by",
+   "fieldtype": "Select",
+   "label": "Dispute Raised By",
+   "options": "Customer\nInternal Staff\nOwner",
+   "reqd": 1
+  },
+  {
+   "default": "Under Investigation",
+   "fieldname": "dispute_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Dispute Status",
+   "options": "Under Investigation\nResolved \u2014 Absorbed\nResolved \u2014 Charged to Customer\nEscalated to ROP\nWithdrawn"
+  },
+  {
+   "fieldname": "section_reason",
+   "fieldtype": "Section Break",
+   "label": "Dispute Details"
+  },
+  {
+   "fieldname": "dispute_reason",
+   "fieldtype": "Select",
+   "label": "Dispute Reason",
+   "options": "Customer Denies Being Driver\nWrong Vehicle Plate\nFine During Workshop Period\nROP Data Error\nVehicle Was Stolen\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dispute_details",
+   "fieldtype": "Text Editor",
+   "label": "Dispute Details / Supporting Evidence"
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "investigation_notes",
+   "fieldtype": "Text Editor",
+   "label": "Investigation Notes (Internal)"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_resolution",
+   "fieldtype": "Section Break",
+   "label": "Resolution"
+  },
+  {
+   "fieldname": "resolution_decision",
+   "fieldtype": "Select",
+   "label": "Resolution Decision",
+   "options": "\nAbsorb Internally \u2014 company bears cost\nCharge Customer \u2014 sufficient evidence\nEscalate to ROP \u2014 formal challenge"
+  },
+  {
+   "fieldname": "resolution_date",
+   "fieldtype": "Date",
+   "label": "Resolution Date"
+  },
+  {
+   "fieldname": "resolved_by",
+   "fieldtype": "Link",
+   "label": "Resolved By",
+   "options": "User"
+  },
+  {
+   "fieldname": "resolution_notes",
+   "fieldtype": "Small Text",
+   "label": "Resolution Notes"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Fine Dispute",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:07.070440",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Fine Dispute",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

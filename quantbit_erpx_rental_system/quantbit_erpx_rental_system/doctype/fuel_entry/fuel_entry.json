@@ -1,0 +1,166 @@
+{
+ "actions": [],
+ "autoname": "format:FE-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:06.811158",
+ "description": "Fuel refill record \u2014 tracks litres, cost, station, and linked to trip/vehicle. Used for fuel cost analysis in Internal Fleet.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "vehicle",
+  "driver",
+  "fuel_date",
+  "col_break_1",
+  "fuel_type",
+  "litres_filled",
+  "cost_per_litre",
+  "total_cost",
+  "col_break_2",
+  "odometer_at_refuel",
+  "fuel_station",
+  "receipt_number",
+  "linked_trip_log",
+  "payment_method",
+  "cost_centre",
+  "fuel_expense_account",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vehicle / Plate",
+   "options": "Vehicle Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Driver",
+   "options": "Driver Master"
+  },
+  {
+   "default": "Today",
+   "fieldname": "fuel_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Refuel Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fuel_type",
+   "fieldtype": "Select",
+   "label": "Fuel Type",
+   "options": "Petrol\nDiesel\nPremium Petrol",
+   "reqd": 1
+  },
+  {
+   "fieldname": "litres_filled",
+   "fieldtype": "Float",
+   "label": "Litres Filled",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cost_per_litre",
+   "fieldtype": "Currency",
+   "label": "Cost per Litre (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "total_cost",
+   "fieldtype": "Currency",
+   "label": "Total Cost (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "odometer_at_refuel",
+   "fieldtype": "Float",
+   "label": "Odometer at Refuel (KM)"
+  },
+  {
+   "fieldname": "fuel_station",
+   "fieldtype": "Data",
+   "label": "Fuel Station / Location"
+  },
+  {
+   "fieldname": "receipt_number",
+   "fieldtype": "Data",
+   "label": "Receipt / Invoice No."
+  },
+  {
+   "fieldname": "linked_trip_log",
+   "fieldtype": "Link",
+   "label": "Linked Trip Log",
+   "options": "Trip Log"
+  },
+  {
+   "fieldname": "payment_method",
+   "fieldtype": "Select",
+   "label": "Payment Method",
+   "options": "Fuel Card\nCash\nCompany Card\nPetty Cash"
+  },
+  {
+   "fetch_from": "vehicle.cost_centre",
+   "fieldname": "cost_centre",
+   "fieldtype": "Link",
+   "label": "Cost Centre",
+   "options": "Account"
+  },
+  {
+   "fieldname": "fuel_expense_account",
+   "fieldtype": "Link",
+   "label": "GL Fuel Expense Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Fuel Entry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:05.069514",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Fuel Entry",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

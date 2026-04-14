@@ -1,0 +1,126 @@
+{
+  "doctype": "DocType",
+  "name": "Trip Log",
+  "module": "ERPX Rental",
+  "naming_rule": "Expression",
+  "autoname": "format:TL-{YYYY}-{#####}",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "description": "Internal Fleet: actual trip record — odometer readings, driver, route, cost per km. Linked to Trip Request.",
+  "fields": [
+    {
+      "fieldname": "trip_request",
+      "fieldtype": "Link",
+      "label": "Trip Request",
+      "options": "Trip Request",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "vehicle",
+      "fieldtype": "Link",
+      "label": "Vehicle / Plate",
+      "options": "Vehicle Master",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "driver",
+      "fieldtype": "Link",
+      "label": "Driver",
+      "options": "Driver Master",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "col_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "trip_date",
+      "fieldtype": "Date",
+      "label": "Trip Date",
+      "reqd": 1,
+      "in_list_view": 1,
+      "default": "Today"
+    },
+    {
+      "fieldname": "departure_time",
+      "fieldtype": "Time",
+      "label": "Departure Time"
+    },
+    {
+      "fieldname": "return_time",
+      "fieldtype": "Time",
+      "label": "Return Time"
+    },
+    {
+      "fieldname": "trip_purpose",
+      "fieldtype": "Data",
+      "label": "Trip Purpose / Destination",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_km",
+      "fieldtype": "Section Break",
+      "label": "Odometer"
+    },
+    {
+      "fieldname": "km_start",
+      "fieldtype": "Float",
+      "label": "Odometer at Start (KM)",
+      "reqd": 1
+    },
+    {
+      "fieldname": "km_end",
+      "fieldtype": "Float",
+      "label": "Odometer at End (KM)"
+    },
+    {
+      "fieldname": "km_driven",
+      "fieldtype": "Float",
+      "label": "KM Driven",
+      "read_only": 1,
+      "description": "Auto = KM End − KM Start"
+    },
+    {
+      "fieldname": "col_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "cost_per_km",
+      "fieldtype": "Currency",
+      "label": "Cost per KM (OMR)",
+      "options": "currency",
+      "read_only": 1
+    },
+    {
+      "fieldname": "total_trip_cost",
+      "fieldtype": "Currency",
+      "label": "Total Trip Cost (OMR)",
+      "options": "currency",
+      "read_only": 1
+    },
+    {
+      "fieldname": "department",
+      "fieldtype": "Link",
+      "label": "Department (cost allocation)",
+      "options": "Department"
+    },
+    {
+      "fieldname": "cost_centre",
+      "fieldtype": "Link",
+      "label": "Cost Centre",
+      "options": "Cost Centre",
+      "fetch_from": "vehicle.cost_centre"
+    },
+    {
+      "fieldname": "notes",
+      "fieldtype": "Small Text",
+      "label": "Trip Notes / Remarks"
+    }
+  ],
+  "permissions": [
+    {"role": "Fleet Manager", "read": 1, "write": 1, "create": 1, "submit": 1},
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "submit": 1, "cancel": 1, "delete": 1}
+  ]
+}

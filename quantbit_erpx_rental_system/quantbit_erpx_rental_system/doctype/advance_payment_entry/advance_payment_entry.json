@@ -1,0 +1,191 @@
+{
+ "actions": [],
+ "autoname": "format:ADV-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:34:55.999257",
+ "description": "Advance rent payment received before contract period. GL: Dr Cash/Bank  Cr Advance Rent Received (2210). Auto-applied to final invoice on contract closure.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "rental_contract",
+  "customer",
+  "vehicle",
+  "col_break_1",
+  "payment_date",
+  "advance_amount",
+  "payment_method",
+  "col_break_2",
+  "payment_reference",
+  "bank_account",
+  "advance_status",
+  "section_gl",
+  "gl_journal_entry",
+  "col_break_3",
+  "applied_to_invoice",
+  "amount_applied",
+  "balance_remaining",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "rental_contract",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Rental Contract",
+   "options": "Rental Contract",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rental_contract.customer",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rental_contract.vehicle",
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "label": "Vehicle",
+   "options": "Vehicle Master",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "payment_date",
+   "fieldtype": "Date",
+   "label": "Payment Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "advance_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Advance Amount (OMR)",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "payment_method",
+   "fieldtype": "Select",
+   "label": "Payment Method",
+   "options": "Cash\nCard\nBank Transfer\nCheque",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payment_reference",
+   "fieldtype": "Data",
+   "label": "Payment Reference / Receipt No."
+  },
+  {
+   "fieldname": "bank_account",
+   "fieldtype": "Link",
+   "label": "Cash / Bank Account (ERPNext)",
+   "options": "Account"
+  },
+  {
+   "default": "Held",
+   "fieldname": "advance_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Advance Status",
+   "options": "Held\nPartially Applied\nFully Applied\nRefunded"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_gl",
+   "fieldtype": "Section Break",
+   "label": "GL References"
+  },
+  {
+   "description": "Auto: Dr Cash/Bank  Cr 2210 Advance Rent Received",
+   "fieldname": "gl_journal_entry",
+   "fieldtype": "Link",
+   "label": "Receipt Journal Entry",
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "applied_to_invoice",
+   "fieldtype": "Link",
+   "label": "Applied to Sales Invoice",
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amount_applied",
+   "fieldtype": "Currency",
+   "label": "Amount Applied (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "balance_remaining",
+   "fieldtype": "Currency",
+   "label": "Balance Remaining (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Advance Payment Entry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:02.370399",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Advance Payment Entry",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Billing Staff",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

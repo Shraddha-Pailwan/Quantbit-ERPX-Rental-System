@@ -1,0 +1,210 @@
+{
+ "actions": [],
+ "autoname": "format:SD-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:26.209407",
+ "description": "Security deposit collected from customer at contract start. GL: Dr Cash/Bank  Cr Customer Deposit Payable (2200). Reconciled against final invoice on closure.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "rental_contract",
+  "customer",
+  "vehicle",
+  "col_break_1",
+  "deposit_amount",
+  "collection_date",
+  "collection_method",
+  "col_break_2",
+  "bank_account",
+  "gl_journal_entry",
+  "deposit_status",
+  "section_settlement",
+  "settlement_date",
+  "final_invoice_amount",
+  "deposit_applied_to_invoice",
+  "col_break_3",
+  "refund_amount",
+  "refund_method",
+  "refund_date",
+  "settlement_journal_entry",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "rental_contract",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Rental Contract",
+   "options": "Rental Contract",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rental_contract.customer",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rental_contract.vehicle",
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "label": "Vehicle",
+   "options": "Vehicle Master",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "deposit_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Deposit Amount (OMR)",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "collection_date",
+   "fieldtype": "Date",
+   "label": "Collection Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "collection_method",
+   "fieldtype": "Select",
+   "label": "Collection Method",
+   "options": "Cash\nCredit Card Hold\nCheque\nCorporate Waived",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bank_account",
+   "fieldtype": "Link",
+   "label": "Bank / Cash Account (ERPNext)",
+   "options": "Account"
+  },
+  {
+   "description": "Auto-created on submit: Dr Cash/Bank  Cr Customer Deposit Payable",
+   "fieldname": "gl_journal_entry",
+   "fieldtype": "Link",
+   "label": "GL Journal Entry (Receipt)",
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "default": "Held",
+   "fieldname": "deposit_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Deposit Status",
+   "options": "Held\nPartially Applied\nSettled\nRefunded\nForfeited"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_settlement",
+   "fieldtype": "Section Break",
+   "label": "Settlement (filled on contract closure)"
+  },
+  {
+   "fieldname": "settlement_date",
+   "fieldtype": "Date",
+   "label": "Settlement Date"
+  },
+  {
+   "fieldname": "final_invoice_amount",
+   "fieldtype": "Currency",
+   "label": "Final Invoice Amount (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "deposit_applied_to_invoice",
+   "fieldtype": "Currency",
+   "label": "Applied to Final Invoice (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Auto = Deposit - Amount Applied",
+   "fieldname": "refund_amount",
+   "fieldtype": "Currency",
+   "label": "Refund to Customer (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "refund_method",
+   "fieldtype": "Select",
+   "label": "Refund Method",
+   "options": "Cash\nBank Transfer\nCard Reversal\nCheque"
+  },
+  {
+   "fieldname": "refund_date",
+   "fieldtype": "Date",
+   "label": "Refund Date"
+  },
+  {
+   "fieldname": "settlement_journal_entry",
+   "fieldtype": "Link",
+   "label": "Settlement Journal Entry",
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Security Deposit Entry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:09.501938",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Security Deposit Entry",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Billing Staff",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

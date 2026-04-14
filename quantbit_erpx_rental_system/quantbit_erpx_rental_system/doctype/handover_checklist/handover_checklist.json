@@ -1,0 +1,398 @@
+{
+ "actions": [],
+ "autoname": "format:HC-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:08.070832",
+ "description": "Pre-delivery and post-return vehicle condition checklist \u2014 16 body panels + 12 accessories. Linked to Rental Contract.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "rental_contract",
+  "checklist_type",
+  "checklist_date",
+  "col_break_1",
+  "checklist_time",
+  "odometer_reading",
+  "fuel_level",
+  "col_break_2",
+  "staff_name",
+  "customer_present",
+  "section_panels",
+  "panel_front_bumper",
+  "panel_rear_bumper",
+  "panel_left_front_door",
+  "panel_left_rear_door",
+  "col_break_3",
+  "panel_right_front_door",
+  "panel_right_rear_door",
+  "panel_bonnet",
+  "panel_boot",
+  "col_break_4",
+  "panel_front_windscreen",
+  "panel_rear_windscreen",
+  "panel_left_mirror",
+  "panel_right_mirror",
+  "panel_roof",
+  "panel_left_sills",
+  "panel_right_sills",
+  "panel_interior_cabin",
+  "panel_damage_notes",
+  "section_accessories",
+  "acc_tyre_tread",
+  "acc_spare_tyre",
+  "acc_tools_jack",
+  "acc_car_documents",
+  "col_break_5",
+  "acc_radio",
+  "acc_ac_working",
+  "acc_floor_mats",
+  "acc_sunshade",
+  "col_break_6",
+  "acc_usb_charger",
+  "acc_vehicle_manual",
+  "acc_fuel_card",
+  "acc_parking_card",
+  "section_signatures",
+  "customer_acknowledged",
+  "staff_signed",
+  "notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "rental_contract",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Rental Contract",
+   "options": "Rental Contract",
+   "reqd": 1
+  },
+  {
+   "fieldname": "checklist_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Checklist Type",
+   "options": "Pre-Delivery (Handover)\nPost-Return",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "checklist_date",
+   "fieldtype": "Date",
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "checklist_time",
+   "fieldtype": "Time",
+   "label": "Time"
+  },
+  {
+   "fieldname": "odometer_reading",
+   "fieldtype": "Float",
+   "label": "Odometer Reading (KM)"
+  },
+  {
+   "fieldname": "fuel_level",
+   "fieldtype": "Select",
+   "label": "Fuel Level",
+   "options": "Full\n3/4\n1/2\n1/4\nEmpty"
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "staff_name",
+   "fieldtype": "Link",
+   "label": "Staff Name",
+   "options": "User"
+  },
+  {
+   "default": "0",
+   "fieldname": "customer_present",
+   "fieldtype": "Check",
+   "label": "Customer Present?"
+  },
+  {
+   "fieldname": "section_panels",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Body Condition \u2014 16 Panels"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_front_bumper",
+   "fieldtype": "Select",
+   "label": "Front Bumper",
+   "options": "OK\nScratch\nDent\nDamage\nMissing"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_rear_bumper",
+   "fieldtype": "Select",
+   "label": "Rear Bumper",
+   "options": "OK\nScratch\nDent\nDamage\nMissing"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_left_front_door",
+   "fieldtype": "Select",
+   "label": "Left Front Door",
+   "options": "OK\nScratch\nDent\nDamage\nMissing"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_left_rear_door",
+   "fieldtype": "Select",
+   "label": "Left Rear Door",
+   "options": "OK\nScratch\nDent\nDamage\nMissing"
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_right_front_door",
+   "fieldtype": "Select",
+   "label": "Right Front Door",
+   "options": "OK\nScratch\nDent\nDamage\nMissing"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_right_rear_door",
+   "fieldtype": "Select",
+   "label": "Right Rear Door",
+   "options": "OK\nScratch\nDent\nDamage\nMissing"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_bonnet",
+   "fieldtype": "Select",
+   "label": "Bonnet / Hood",
+   "options": "OK\nScratch\nDent\nDamage\nMissing"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_boot",
+   "fieldtype": "Select",
+   "label": "Boot / Trunk",
+   "options": "OK\nScratch\nDent\nDamage\nMissing"
+  },
+  {
+   "fieldname": "col_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_front_windscreen",
+   "fieldtype": "Select",
+   "label": "Front Windscreen",
+   "options": "OK\nChip\nCrack\nDamage"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_rear_windscreen",
+   "fieldtype": "Select",
+   "label": "Rear Windscreen",
+   "options": "OK\nChip\nCrack\nDamage"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_left_mirror",
+   "fieldtype": "Select",
+   "label": "Left Mirror",
+   "options": "OK\nScratch\nDamage\nMissing"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_right_mirror",
+   "fieldtype": "Select",
+   "label": "Right Mirror",
+   "options": "OK\nScratch\nDamage\nMissing"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_roof",
+   "fieldtype": "Select",
+   "label": "Roof",
+   "options": "OK\nScratch\nDent\nDamage"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_left_sills",
+   "fieldtype": "Select",
+   "label": "Left Sills / Side Skirts",
+   "options": "OK\nScratch\nDamage\nMissing"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_right_sills",
+   "fieldtype": "Select",
+   "label": "Right Sills / Side Skirts",
+   "options": "OK\nScratch\nDamage\nMissing"
+  },
+  {
+   "default": "OK",
+   "fieldname": "panel_interior_cabin",
+   "fieldtype": "Select",
+   "label": "Interior / Cabin",
+   "options": "OK\nDirty\nStain\nDamage\nSmell"
+  },
+  {
+   "fieldname": "panel_damage_notes",
+   "fieldtype": "Small Text",
+   "label": "Damage Notes / \u062a\u0641\u0627\u0635\u064a\u0644 \u0627\u0644\u0623\u0636\u0631\u0627\u0631"
+  },
+  {
+   "fieldname": "section_accessories",
+   "fieldtype": "Section Break",
+   "label": "Accessories Checklist \u2014 12 Items"
+  },
+  {
+   "default": "1",
+   "fieldname": "acc_tyre_tread",
+   "fieldtype": "Check",
+   "label": "Tyre Tread (acceptable condition)"
+  },
+  {
+   "default": "1",
+   "fieldname": "acc_spare_tyre",
+   "fieldtype": "Check",
+   "label": "Spare Tyre"
+  },
+  {
+   "default": "1",
+   "fieldname": "acc_tools_jack",
+   "fieldtype": "Check",
+   "label": "Tools & Jack / \u0627\u0644\u0623\u062f\u0648\u0627\u062a \u0648\u0627\u0644\u0631\u0627\u0641\u0639\u0629"
+  },
+  {
+   "default": "1",
+   "fieldname": "acc_car_documents",
+   "fieldtype": "Check",
+   "label": "Car Documents / \u0648\u062b\u0627\u0626\u0642 \u0627\u0644\u0633\u064a\u0627\u0631\u0629"
+  },
+  {
+   "fieldname": "col_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "acc_radio",
+   "fieldtype": "Check",
+   "label": "Radio / Infotainment"
+  },
+  {
+   "default": "1",
+   "fieldname": "acc_ac_working",
+   "fieldtype": "Check",
+   "label": "A/C Working"
+  },
+  {
+   "default": "1",
+   "fieldname": "acc_floor_mats",
+   "fieldtype": "Check",
+   "label": "Floor Mats / \u0645\u0648\u0635\u0644\u0627\u062a \u0627\u0644\u0623\u0631\u0636\u064a\u0629"
+  },
+  {
+   "default": "0",
+   "fieldname": "acc_sunshade",
+   "fieldtype": "Check",
+   "label": "Sunshade"
+  },
+  {
+   "fieldname": "col_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "acc_usb_charger",
+   "fieldtype": "Check",
+   "label": "USB Charger"
+  },
+  {
+   "default": "0",
+   "fieldname": "acc_vehicle_manual",
+   "fieldtype": "Check",
+   "label": "Vehicle Manual / \u062f\u0644\u064a\u0644 \u0627\u0644\u0645\u0631\u0643\u0628\u0629"
+  },
+  {
+   "default": "0",
+   "fieldname": "acc_fuel_card",
+   "fieldtype": "Check",
+   "label": "Fuel Card (if provided)"
+  },
+  {
+   "default": "0",
+   "fieldname": "acc_parking_card",
+   "fieldtype": "Check",
+   "label": "Parking Card (if provided)"
+  },
+  {
+   "fieldname": "section_signatures",
+   "fieldtype": "Section Break",
+   "label": "Acknowledgement"
+  },
+  {
+   "default": "0",
+   "fieldname": "customer_acknowledged",
+   "fieldtype": "Check",
+   "label": "Customer Acknowledged Condition"
+  },
+  {
+   "default": "0",
+   "fieldname": "staff_signed",
+   "fieldtype": "Check",
+   "label": "Staff Signed Off"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Additional Notes"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Handover Checklist",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:06.697993",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Handover Checklist",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

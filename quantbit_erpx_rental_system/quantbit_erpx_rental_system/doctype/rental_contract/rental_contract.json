@@ -1,0 +1,887 @@
+{
+ "actions": [],
+ "autoname": "format:RC-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:23.577729",
+ "description": "Core rental contract \u2014 links customer, vehicle, rate card, and all billing terms. Submission updates vehicle status and creates advance payment GL entry.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_header",
+  "contract_type",
+  "contract_status",
+  "branch",
+  "col_break_1",
+  "contract_date",
+  "created_by_staff",
+  "section_customer",
+  "customer",
+  "customer_kyc",
+  "customer_type",
+  "col_break_2",
+  "customer_mobile",
+  "licence_expiry",
+  "residential_address",
+  "col_break_3",
+  "work_address",
+  "section_vehicle",
+  "vehicle",
+  "vehicle_make_model",
+  "vehicle_category",
+  "col_break_4",
+  "vehicle_colour",
+  "insurance_type",
+  "section_dates",
+  "date_out",
+  "time_out",
+  "date_return",
+  "col_break_5",
+  "time_return",
+  "km_out",
+  "fuel_level_out",
+  "col_break_6",
+  "delivery_required",
+  "delivery_location",
+  "delivery_charge",
+  "section_rates",
+  "rate_card",
+  "daily_rate",
+  "weekly_rate",
+  "monthly_rate",
+  "col_break_7",
+  "free_km_per_day",
+  "free_km_per_week",
+  "free_km_per_month",
+  "col_break_8",
+  "excess_km_charge_daily",
+  "excess_km_charge_monthly",
+  "km_carryover_rule",
+  "km_carryover_cap",
+  "section_deposit_billing",
+  "advance_amount",
+  "advance_payment_method",
+  "security_deposit",
+  "col_break_9",
+  "deposit_method",
+  "deposit_settlement_mode",
+  "billing_mode",
+  "col_break_10",
+  "invoice_type",
+  "vat_rate",
+  "credit_period_days",
+  "pdc_required",
+  "section_penalties",
+  "grace_period_hours",
+  "late_return_billing_mode",
+  "hourly_late_rate",
+  "col_break_11",
+  "unclean_return_charge",
+  "smoking_penalty",
+  "fuel_not_topped_up_penalty",
+  "missing_accessory_charge",
+  "section_extensions",
+  "extension_1_date",
+  "extension_1_time",
+  "extension_1_rate",
+  "col_break_12",
+  "extension_2_date",
+  "extension_2_time",
+  "extension_2_rate",
+  "col_break_13",
+  "extension_3_date",
+  "extension_3_time",
+  "extension_3_rate",
+  "section_return",
+  "actual_return_date",
+  "actual_return_time",
+  "km_return",
+  "col_break_14",
+  "fuel_level_return",
+  "vehicle_clean_on_return",
+  "late_return_days",
+  "section_financials",
+  "base_rental_amount",
+  "excess_km_charges",
+  "late_return_charge",
+  "damage_charges",
+  "col_break_15",
+  "gross_amount",
+  "vat_amount",
+  "total_amount",
+  "col_break_16",
+  "advance_applied",
+  "deposit_applied",
+  "net_due",
+  "section_erp_links",
+  "sales_invoice",
+  "advance_journal_entry",
+  "deposit_journal_entry",
+  "col_break_17",
+  "handover_checklist",
+  "return_checklist",
+  "section_notes",
+  "contract_notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_header",
+   "fieldtype": "Section Break",
+   "label": "Contract Details"
+  },
+  {
+   "fieldname": "contract_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Contract Type",
+   "options": "Daily\nWeekly\nMonthly\nCorporate",
+   "reqd": 1
+  },
+  {
+   "default": "Draft",
+   "fieldname": "contract_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Contract Status",
+   "options": "Draft\nActive\nExtended\nPending Return\nClosed\nCancelled"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "contract_date",
+   "fieldtype": "Date",
+   "label": "Contract Date",
+   "reqd": 1
+  },
+  {
+   "default": "__user",
+   "fieldname": "created_by_staff",
+   "fieldtype": "Link",
+   "label": "Created By (Staff)",
+   "options": "User"
+  },
+  {
+   "fieldname": "section_customer",
+   "fieldtype": "Section Break",
+   "label": "Customer"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "description": "Auto-fetched from Customer KYC record",
+   "fieldname": "customer_kyc",
+   "fieldtype": "Link",
+   "label": "Customer KYC Reference",
+   "options": "Customer KYC",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer_kyc.customer_type",
+   "fieldname": "customer_type",
+   "fieldtype": "Data",
+   "label": "Customer Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "customer_kyc.mobile_number",
+   "fieldname": "customer_mobile",
+   "fieldtype": "Data",
+   "label": "Customer Mobile",
+   "read_only": 1
+  },
+  {
+   "description": "Auto-filled \u2014 contract cannot be submitted if licence is expired",
+   "fetch_from": "customer_kyc.licence_expiry_date",
+   "fieldname": "licence_expiry",
+   "fieldtype": "Date",
+   "label": "Driving Licence Expiry",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer_kyc.residential_address",
+   "fieldname": "residential_address",
+   "fieldtype": "Small Text",
+   "label": "Residential Address"
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "customer_kyc.work_address",
+   "fieldname": "work_address",
+   "fieldtype": "Small Text",
+   "label": "Work / Office Address"
+  },
+  {
+   "fieldname": "section_vehicle",
+   "fieldtype": "Section Break",
+   "label": "Vehicle"
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Vehicle / Plate",
+   "options": "Vehicle Master",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "vehicle.make",
+   "fieldname": "vehicle_make_model",
+   "fieldtype": "Data",
+   "label": "Make / Model",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "vehicle.vehicle_category",
+   "fieldname": "vehicle_category",
+   "fieldtype": "Data",
+   "label": "Vehicle Category",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "vehicle.colour",
+   "fieldname": "vehicle_colour",
+   "fieldtype": "Data",
+   "label": "Vehicle Colour",
+   "read_only": 1
+  },
+  {
+   "description": "As agreed for this rental \u2014 may differ from vehicle default",
+   "fieldname": "insurance_type",
+   "fieldtype": "Select",
+   "label": "Insurance Type on Contract",
+   "options": "Full Cover\nThird Party",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_dates",
+   "fieldtype": "Section Break",
+   "label": "Rental Period"
+  },
+  {
+   "fieldname": "date_out",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date Out / \u062a\u0627\u0631\u064a\u062e \u0627\u0644\u062a\u0633\u0644\u064a\u0645",
+   "reqd": 1
+  },
+  {
+   "fieldname": "time_out",
+   "fieldtype": "Time",
+   "label": "Time Out / \u0648\u0642\u062a \u0627\u0644\u062a\u0633\u0644\u064a\u0645",
+   "reqd": 1
+  },
+  {
+   "fieldname": "date_return",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Expected Return Date / \u062a\u0627\u0631\u064a\u062e \u0627\u0644\u0625\u0639\u0627\u062f\u0629",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "time_return",
+   "fieldtype": "Time",
+   "label": "Expected Return Time"
+  },
+  {
+   "description": "Odometer reading at vehicle handover",
+   "fieldname": "km_out",
+   "fieldtype": "Float",
+   "label": "KM Out / \u0639\u062f\u0627\u062f \u0627\u0644\u0645\u0633\u0627\u0641\u0629 \u0639\u0646\u062f \u0627\u0644\u062a\u0633\u0644\u064a\u0645",
+   "reqd": 1
+  },
+  {
+   "default": "Full",
+   "fieldname": "fuel_level_out",
+   "fieldtype": "Select",
+   "label": "Fuel Level Out",
+   "options": "Full\n3/4\n1/2\n1/4\nEmpty"
+  },
+  {
+   "fieldname": "col_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "delivery_required",
+   "fieldtype": "Check",
+   "label": "Delivery Required?"
+  },
+  {
+   "depends_on": "eval:doc.delivery_required==1",
+   "fieldname": "delivery_location",
+   "fieldtype": "Data",
+   "label": "Delivery Location"
+  },
+  {
+   "depends_on": "eval:doc.delivery_required==1",
+   "fieldname": "delivery_charge",
+   "fieldtype": "Currency",
+   "label": "Delivery Charge (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "section_rates",
+   "fieldtype": "Section Break",
+   "label": "Rates & Mileage"
+  },
+  {
+   "description": "Select to auto-fill all rate and mileage fields below",
+   "fieldname": "rate_card",
+   "fieldtype": "Link",
+   "label": "Rate Card",
+   "options": "Rate Card"
+  },
+  {
+   "fetch_from": "rate_card.daily_rate",
+   "fieldname": "daily_rate",
+   "fieldtype": "Currency",
+   "label": "Daily Rate (OMR)",
+   "options": "currency"
+  },
+  {
+   "fetch_from": "rate_card.weekly_rate",
+   "fieldname": "weekly_rate",
+   "fieldtype": "Currency",
+   "label": "Weekly Rate (OMR)",
+   "options": "currency"
+  },
+  {
+   "fetch_from": "rate_card.monthly_rate",
+   "fieldname": "monthly_rate",
+   "fieldtype": "Currency",
+   "label": "Monthly Rate (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "col_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "200",
+   "fetch_from": "rate_card.free_km_per_day",
+   "fieldname": "free_km_per_day",
+   "fieldtype": "Float",
+   "label": "Free KM per Day"
+  },
+  {
+   "default": "1200",
+   "fetch_from": "rate_card.free_km_per_week",
+   "fieldname": "free_km_per_week",
+   "fieldtype": "Float",
+   "label": "Free KM per Week"
+  },
+  {
+   "default": "4000",
+   "fetch_from": "rate_card.free_km_per_month",
+   "fieldname": "free_km_per_month",
+   "fieldtype": "Float",
+   "label": "Free KM per Month"
+  },
+  {
+   "fieldname": "col_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "rate_card.excess_km_charge_daily",
+   "fieldname": "excess_km_charge_daily",
+   "fieldtype": "Currency",
+   "label": "Excess KM Charge Daily (OMR/km)",
+   "options": "currency"
+  },
+  {
+   "fetch_from": "rate_card.excess_km_charge_monthly",
+   "fieldname": "excess_km_charge_monthly",
+   "fieldtype": "Currency",
+   "label": "Excess KM Charge Monthly (OMR/km)",
+   "options": "currency"
+  },
+  {
+   "fetch_from": "rate_card.km_carryover_rule",
+   "fieldname": "km_carryover_rule",
+   "fieldtype": "Select",
+   "label": "KM Carry-Over Rule",
+   "options": "Lapse \u2014 use it or lose it\nCarry Over \u2014 unlimited\nCarry Over \u2014 up to cap"
+  },
+  {
+   "depends_on": "eval:doc.km_carryover_rule=='Carry Over \u2014 up to cap'",
+   "fetch_from": "rate_card.km_carryover_cap",
+   "fieldname": "km_carryover_cap",
+   "fieldtype": "Float",
+   "label": "Carry-Over Cap (KM)"
+  },
+  {
+   "fieldname": "section_deposit_billing",
+   "fieldtype": "Section Break",
+   "label": "Deposit & Billing"
+  },
+  {
+   "description": "Posts to: Dr Cash/Bank  Cr Advance Rent Received (Liability)",
+   "fieldname": "advance_amount",
+   "fieldtype": "Currency",
+   "label": "Advance Amount (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "advance_payment_method",
+   "fieldtype": "Select",
+   "label": "Advance Payment Method",
+   "options": "Cash\nCard\nBank Transfer\nCheque"
+  },
+  {
+   "description": "Posts to: Dr Cash/Bank  Cr Customer Deposit Payable (Liability)",
+   "fieldname": "security_deposit",
+   "fieldtype": "Currency",
+   "label": "Security Deposit (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "col_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "deposit_method",
+   "fieldtype": "Select",
+   "label": "Deposit Collection Method",
+   "options": "Cash\nCredit Card Hold\nCheque\nCorporate Waived"
+  },
+  {
+   "fieldname": "deposit_settlement_mode",
+   "fieldtype": "Select",
+   "label": "Deposit Settlement on Closure",
+   "options": "Refund Surplus to Customer\nApply to Final Invoice First\nFull Refund if No Damages"
+  },
+  {
+   "default": "Advance \u2014 full period upfront",
+   "fieldname": "billing_mode",
+   "fieldtype": "Select",
+   "label": "Billing Mode",
+   "options": "Advance \u2014 full period upfront\nPost-Period \u2014 invoice at end\nConsolidated Monthly"
+  },
+  {
+   "fieldname": "col_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Per Contract",
+   "fieldname": "invoice_type",
+   "fieldtype": "Select",
+   "label": "Invoice Type",
+   "options": "Per Contract\nConsolidated Monthly"
+  },
+  {
+   "default": "5% \u2014 Oman",
+   "fieldname": "vat_rate",
+   "fieldtype": "Select",
+   "label": "VAT Rate",
+   "options": "5% \u2014 Oman\n15% \u2014 Saudi Arabia\n0% \u2014 No VAT"
+  },
+  {
+   "default": "0",
+   "fieldname": "credit_period_days",
+   "fieldtype": "Int",
+   "label": "Credit Period (Days)"
+  },
+  {
+   "default": "0",
+   "fieldname": "pdc_required",
+   "fieldtype": "Check",
+   "label": "PDC Required?"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_penalties",
+   "fieldtype": "Section Break",
+   "label": "Late Return & Penalties"
+  },
+  {
+   "default": "2",
+   "description": "Hours after agreed return time before late charges apply",
+   "fieldname": "grace_period_hours",
+   "fieldtype": "Float",
+   "label": "Grace Period (Hours)"
+  },
+  {
+   "fieldname": "late_return_billing_mode",
+   "fieldtype": "Select",
+   "label": "Late Return Billing Mode",
+   "options": "Full Extra Day\nHourly Rate\nHalf Day\nNo Charge"
+  },
+  {
+   "depends_on": "eval:doc.late_return_billing_mode=='Hourly Rate'",
+   "fieldname": "hourly_late_rate",
+   "fieldtype": "Currency",
+   "label": "Hourly Late Rate (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "col_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "5",
+   "description": "Company default: OMR 5 \u2014 overridable per contract",
+   "fieldname": "unclean_return_charge",
+   "fieldtype": "Currency",
+   "label": "Unclean Return Charge (OMR)",
+   "options": "currency"
+  },
+  {
+   "default": "25",
+   "fieldname": "smoking_penalty",
+   "fieldtype": "Currency",
+   "label": "Smoking Penalty (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "fuel_not_topped_up_penalty",
+   "fieldtype": "Currency",
+   "label": "Fuel Not Topped Up (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "missing_accessory_charge",
+   "fieldtype": "Currency",
+   "label": "Missing Accessory Charge per Item (OMR)",
+   "options": "currency"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_extensions",
+   "fieldtype": "Section Break",
+   "label": "Contract Extensions / \u062a\u0645\u062f\u064a\u062f \u0627\u0644\u0639\u0642\u062f"
+  },
+  {
+   "fieldname": "extension_1_date",
+   "fieldtype": "Date",
+   "label": "Extension 1 Date / \u062a\u0645\u062f\u064a\u062f \u0627\u0648\u0644"
+  },
+  {
+   "fieldname": "extension_1_time",
+   "fieldtype": "Time",
+   "label": "Extension 1 Return Time"
+  },
+  {
+   "fieldname": "extension_1_rate",
+   "fieldtype": "Currency",
+   "label": "Extension 1 Daily Rate",
+   "options": "currency"
+  },
+  {
+   "fieldname": "col_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "extension_2_date",
+   "fieldtype": "Date",
+   "label": "Extension 2 Date / \u062a\u0645\u062f\u064a\u062f \u062b\u0627\u0646\u064a"
+  },
+  {
+   "fieldname": "extension_2_time",
+   "fieldtype": "Time",
+   "label": "Extension 2 Return Time"
+  },
+  {
+   "fieldname": "extension_2_rate",
+   "fieldtype": "Currency",
+   "label": "Extension 2 Daily Rate",
+   "options": "currency"
+  },
+  {
+   "fieldname": "col_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "extension_3_date",
+   "fieldtype": "Date",
+   "label": "Extension 3 Date / \u062a\u0645\u062f\u064a\u062f \u062b\u0627\u0644\u062b"
+  },
+  {
+   "fieldname": "extension_3_time",
+   "fieldtype": "Time",
+   "label": "Extension 3 Return Time"
+  },
+  {
+   "fieldname": "extension_3_rate",
+   "fieldtype": "Currency",
+   "label": "Extension 3 Daily Rate",
+   "options": "currency"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_return",
+   "fieldtype": "Section Break",
+   "label": "Actual Return (filled on vehicle return)"
+  },
+  {
+   "fieldname": "actual_return_date",
+   "fieldtype": "Date",
+   "label": "Actual Return Date"
+  },
+  {
+   "fieldname": "actual_return_time",
+   "fieldtype": "Time",
+   "label": "Actual Return Time"
+  },
+  {
+   "fieldname": "km_return",
+   "fieldtype": "Float",
+   "label": "KM Return / \u0639\u062f\u0627\u062f \u0627\u0644\u0645\u0633\u0627\u0641\u0629 \u0639\u0646\u062f \u0627\u0644\u0625\u0639\u0627\u062f\u0629"
+  },
+  {
+   "fieldname": "col_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fuel_level_return",
+   "fieldtype": "Select",
+   "label": "Fuel Level Return",
+   "options": "Full\n3/4\n1/2\n1/4\nEmpty"
+  },
+  {
+   "default": "0",
+   "fieldname": "vehicle_clean_on_return",
+   "fieldtype": "Check",
+   "label": "Vehicle Clean on Return?"
+  },
+  {
+   "description": "Auto-calculated on return",
+   "fieldname": "late_return_days",
+   "fieldtype": "Float",
+   "label": "Late Return (Days / Hours)",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_financials",
+   "fieldtype": "Section Break",
+   "label": "Financial Summary"
+  },
+  {
+   "fieldname": "base_rental_amount",
+   "fieldtype": "Currency",
+   "label": "Base Rental Amount (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "excess_km_charges",
+   "fieldtype": "Currency",
+   "label": "Excess KM Charges (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "late_return_charge",
+   "fieldtype": "Currency",
+   "label": "Late Return Charge (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "damage_charges",
+   "fieldtype": "Currency",
+   "label": "Damage / Penalty Charges (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "col_break_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gross_amount",
+   "fieldtype": "Currency",
+   "label": "Gross Amount (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "vat_amount",
+   "fieldtype": "Currency",
+   "label": "VAT Amount (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Invoice Amount (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "advance_applied",
+   "fieldtype": "Currency",
+   "label": "Advance Applied (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "deposit_applied",
+   "fieldtype": "Currency",
+   "label": "Deposit Applied (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_due",
+   "fieldtype": "Currency",
+   "label": "Net Amount Due (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_erp_links",
+   "fieldtype": "Section Break",
+   "label": "ERPNext References"
+  },
+  {
+   "fieldname": "sales_invoice",
+   "fieldtype": "Link",
+   "label": "Sales Invoice",
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
+   "fieldname": "advance_journal_entry",
+   "fieldtype": "Link",
+   "label": "Advance JV Reference",
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "deposit_journal_entry",
+   "fieldtype": "Link",
+   "label": "Deposit JV Reference",
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "handover_checklist",
+   "fieldtype": "Link",
+   "label": "Handover Checklist",
+   "options": "Handover Checklist",
+   "read_only": 1
+  },
+  {
+   "fieldname": "return_checklist",
+   "fieldtype": "Link",
+   "label": "Return Checklist",
+   "options": "Handover Checklist",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_notes",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "contract_notes",
+   "fieldtype": "Small Text",
+   "label": "Contract Notes / Internal Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Rental Contract",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [
+  {
+   "link_doctype": "Sales Invoice",
+   "link_fieldname": "rental_contract"
+  },
+  {
+   "link_doctype": "Traffic Fine",
+   "link_fieldname": "matched_contract"
+  },
+  {
+   "link_doctype": "Security Deposit Entry",
+   "link_fieldname": "rental_contract"
+  }
+ ],
+ "modified": "2026-04-14 13:55:10.099869",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Rental Contract",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Billing Staff",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

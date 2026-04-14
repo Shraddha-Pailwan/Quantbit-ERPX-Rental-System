@@ -1,0 +1,270 @@
+{
+ "actions": [],
+ "autoname": "format:TA-{#####}",
+ "creation": "2026-04-14 13:35:28.706042",
+ "description": "Company-level ERPX Rental configuration \u2014 platform mode, GL account mapping, VAT settings, and default charges.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_company",
+  "company",
+  "platform_mode",
+  "country",
+  "col_break_1",
+  "subscription_plan",
+  "max_vehicles",
+  "whatsapp_api_url",
+  "whatsapp_api_token",
+  "section_vat",
+  "vat_rate",
+  "vat_registration_number",
+  "vat_effective_date",
+  "col_break_2",
+  "vat_output_account",
+  "vat_input_account",
+  "section_gl_mapping",
+  "rental_income_account",
+  "fine_recovery_account",
+  "security_deposit_account",
+  "advance_rent_account",
+  "col_break_3",
+  "vehicle_asset_account",
+  "accumulated_depreciation_account",
+  "maintenance_expense_account",
+  "owner_payout_account",
+  "section_defaults",
+  "default_unclean_charge",
+  "default_smoking_penalty",
+  "default_grace_period_hours",
+  "col_break_4",
+  "default_late_return_mode",
+  "default_mulkiya_alert_days",
+  "default_insurance_alert_days"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_company",
+   "fieldtype": "Section Break",
+   "label": "Company Details"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "ERPNext Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "default": "Rent-a-Car",
+   "description": "Controls which modules and vehicle types are available",
+   "fieldname": "platform_mode",
+   "fieldtype": "Select",
+   "label": "Platform Mode",
+   "options": "Rent-a-Car\nInternal Fleet\nBoth",
+   "reqd": 1
+  },
+  {
+   "default": "Oman",
+   "fieldname": "country",
+   "fieldtype": "Select",
+   "label": "Country",
+   "options": "Oman\nSaudi Arabia\nUAE\nQatar\nKuwait\nBahrain"
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "subscription_plan",
+   "fieldtype": "Select",
+   "label": "Subscription Plan",
+   "options": "Starter\nGrowth\nEnterprise"
+  },
+  {
+   "fieldname": "max_vehicles",
+   "fieldtype": "Int",
+   "label": "Vehicle Limit (plan)"
+  },
+  {
+   "fieldname": "whatsapp_api_url",
+   "fieldtype": "Data",
+   "label": "WhatsApp Business API URL"
+  },
+  {
+   "fieldname": "whatsapp_api_token",
+   "fieldtype": "Password",
+   "label": "WhatsApp API Token"
+  },
+  {
+   "fieldname": "section_vat",
+   "fieldtype": "Section Break",
+   "label": "VAT Configuration"
+  },
+  {
+   "default": "5",
+   "description": "Oman: 5% | Saudi Arabia: 15%",
+   "fieldname": "vat_rate",
+   "fieldtype": "Percent",
+   "label": "VAT Rate (%)"
+  },
+  {
+   "fieldname": "vat_registration_number",
+   "fieldtype": "Data",
+   "label": "VAT / TRN Registration No."
+  },
+  {
+   "fieldname": "vat_effective_date",
+   "fieldtype": "Date",
+   "label": "VAT Effective Date"
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Default: 2310 VAT Payable",
+   "fieldname": "vat_output_account",
+   "fieldtype": "Link",
+   "label": "VAT Output Account (ERPNext)",
+   "options": "Account"
+  },
+  {
+   "fieldname": "vat_input_account",
+   "fieldtype": "Link",
+   "label": "VAT Input Account (ERPNext)",
+   "options": "Account"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_gl_mapping",
+   "fieldtype": "Section Break",
+   "label": "GL Account Mapping"
+  },
+  {
+   "fieldname": "rental_income_account",
+   "fieldtype": "Link",
+   "label": "Rental Income (4100)",
+   "options": "Account"
+  },
+  {
+   "fieldname": "fine_recovery_account",
+   "fieldtype": "Link",
+   "label": "Fine Recovery Income (4110)",
+   "options": "Account"
+  },
+  {
+   "fieldname": "security_deposit_account",
+   "fieldtype": "Link",
+   "label": "Security Deposit Payable (2200)",
+   "options": "Account"
+  },
+  {
+   "fieldname": "advance_rent_account",
+   "fieldtype": "Link",
+   "label": "Advance Rent Received (2210)",
+   "options": "Account"
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "vehicle_asset_account",
+   "fieldtype": "Link",
+   "label": "Vehicle Assets (1500)",
+   "options": "Account"
+  },
+  {
+   "fieldname": "accumulated_depreciation_account",
+   "fieldtype": "Link",
+   "label": "Accumulated Depreciation (1510)",
+   "options": "Account"
+  },
+  {
+   "fieldname": "maintenance_expense_account",
+   "fieldtype": "Link",
+   "label": "Maintenance Expense (5200)",
+   "options": "Account"
+  },
+  {
+   "fieldname": "owner_payout_account",
+   "fieldtype": "Link",
+   "label": "Owner Payout Expense (5100)",
+   "options": "Account"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_defaults",
+   "fieldtype": "Section Break",
+   "label": "Default Charges"
+  },
+  {
+   "default": "5",
+   "fieldname": "default_unclean_charge",
+   "fieldtype": "Currency",
+   "label": "Default Unclean Return Charge (OMR)",
+   "options": "currency"
+  },
+  {
+   "default": "25",
+   "fieldname": "default_smoking_penalty",
+   "fieldtype": "Currency",
+   "label": "Default Smoking Penalty (OMR)",
+   "options": "currency"
+  },
+  {
+   "default": "2",
+   "fieldname": "default_grace_period_hours",
+   "fieldtype": "Float",
+   "label": "Default Grace Period (Hours)"
+  },
+  {
+   "fieldname": "col_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Full Extra Day",
+   "fieldname": "default_late_return_mode",
+   "fieldtype": "Select",
+   "label": "Default Late Return Mode",
+   "options": "Full Extra Day\nHourly Rate\nHalf Day\nNo Charge"
+  },
+  {
+   "default": "30",
+   "fieldname": "default_mulkiya_alert_days",
+   "fieldtype": "Int",
+   "label": "Default Mulkiya Alert Days"
+  },
+  {
+   "default": "30",
+   "fieldname": "default_insurance_alert_days",
+   "fieldtype": "Int",
+   "label": "Default Insurance Alert Days"
+  }
+ ],
+ "links": [],
+ "modified": "2026-04-14 13:55:08.772352",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Tenant Profile",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Fleet Manager"
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

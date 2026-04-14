@@ -1,0 +1,219 @@
+{
+ "actions": [],
+ "autoname": "format:INS-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:11.407774",
+ "description": "Full vehicle insurance policy record \u2014 separate from Vehicle Master for multi-policy tracking and claims management.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "vehicle",
+  "insurance_type",
+  "insurer_name",
+  "policy_number",
+  "col_break_1",
+  "policy_start_date",
+  "policy_expiry_date",
+  "policy_status",
+  "renewal_alert_days",
+  "section_financial",
+  "annual_premium",
+  "payment_frequency",
+  "next_premium_due",
+  "col_break_2",
+  "coverage_amount",
+  "deductible_excess",
+  "section_contact",
+  "insurer_contact_name",
+  "insurer_phone",
+  "insurer_email",
+  "col_break_3",
+  "insurance_expense_account",
+  "coverage_notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Vehicle / Plate",
+   "options": "Vehicle Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "insurance_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Insurance Type",
+   "options": "Full Cover / Comprehensive\nThird Party Liability\nOwn Damage Only",
+   "reqd": 1
+  },
+  {
+   "fieldname": "insurer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Insurance Company / Insurer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "policy_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Policy Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "policy_start_date",
+   "fieldtype": "Date",
+   "label": "Policy Start Date",
+   "reqd": 1
+  },
+  {
+   "description": "WhatsApp alert sent 30 days before expiry",
+   "fieldname": "policy_expiry_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Policy Expiry Date",
+   "reqd": 1
+  },
+  {
+   "default": "Active",
+   "fieldname": "policy_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Policy Status",
+   "options": "Active\nExpiring Soon\nExpired\nCancelled\nRenewed"
+  },
+  {
+   "default": "30",
+   "fieldname": "renewal_alert_days",
+   "fieldtype": "Int",
+   "label": "Renewal Alert Days Before Expiry"
+  },
+  {
+   "fieldname": "section_financial",
+   "fieldtype": "Section Break",
+   "label": "Premium & Coverage"
+  },
+  {
+   "fieldname": "annual_premium",
+   "fieldtype": "Currency",
+   "label": "Annual Premium (OMR)",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "default": "Annual (one payment)",
+   "fieldname": "payment_frequency",
+   "fieldtype": "Select",
+   "label": "Premium Payment Frequency",
+   "options": "Annual (one payment)\nSemi-Annual (2 payments)\nQuarterly (4 payments)"
+  },
+  {
+   "fieldname": "next_premium_due",
+   "fieldtype": "Date",
+   "label": "Next Premium Payment Due"
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Market or agreed insured value of the vehicle",
+   "fieldname": "coverage_amount",
+   "fieldtype": "Currency",
+   "label": "Coverage / Insured Value (OMR)",
+   "options": "currency"
+  },
+  {
+   "fieldname": "deductible_excess",
+   "fieldtype": "Currency",
+   "label": "Deductible / Excess per Claim (OMR)",
+   "options": "currency"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_contact",
+   "fieldtype": "Section Break",
+   "label": "Insurer Contact"
+  },
+  {
+   "fieldname": "insurer_contact_name",
+   "fieldtype": "Data",
+   "label": "Contact / Agent Name"
+  },
+  {
+   "fieldname": "insurer_phone",
+   "fieldtype": "Data",
+   "label": "Insurer Phone"
+  },
+  {
+   "fieldname": "insurer_email",
+   "fieldtype": "Data",
+   "label": "Insurer Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "col_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Default: 5300 Insurance Expense",
+   "fieldname": "insurance_expense_account",
+   "fieldtype": "Link",
+   "label": "GL Expense Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "coverage_notes",
+   "fieldtype": "Small Text",
+   "label": "Coverage Notes / Exclusions"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Insurance Policy",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:06.046158",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Insurance Policy",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

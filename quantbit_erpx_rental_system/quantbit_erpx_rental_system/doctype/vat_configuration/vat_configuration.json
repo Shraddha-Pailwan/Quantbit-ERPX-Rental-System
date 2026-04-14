@@ -1,0 +1,157 @@
+{
+ "actions": [],
+ "autoname": "format:VC-{#####}",
+ "creation": "2026-04-14 13:35:34.893350",
+ "description": "Per-company VAT setup \u2014 supports Oman 5% and Saudi Arabia 15% in the same installation.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "country",
+  "vat_rate",
+  "col_break_1",
+  "tax_registration_number",
+  "vat_effective_date",
+  "is_active",
+  "section_accounts",
+  "vat_output_account",
+  "vat_input_account",
+  "col_break_2",
+  "sales_tax_template",
+  "purchase_tax_template",
+  "section_filing",
+  "filing_frequency",
+  "last_filing_date",
+  "next_filing_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "ERPNext Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Country",
+   "options": "Oman\nSaudi Arabia\nUAE\nQatar\nKuwait\nBahrain",
+   "reqd": 1
+  },
+  {
+   "description": "Oman: 5% | Saudi Arabia ZATCA: 15%",
+   "fieldname": "vat_rate",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "VAT Rate (%)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tax_registration_number",
+   "fieldtype": "Data",
+   "label": "Tax Registration Number (TRN / ZATCA No.)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vat_effective_date",
+   "fieldtype": "Date",
+   "label": "VAT Effective Date"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Active"
+  },
+  {
+   "fieldname": "section_accounts",
+   "fieldtype": "Section Break",
+   "label": "GL Accounts"
+  },
+  {
+   "description": "2310 VAT Payable \u2014 credited when invoicing customers",
+   "fieldname": "vat_output_account",
+   "fieldtype": "Link",
+   "label": "VAT Output (Payable) Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "description": "VAT paid on purchases \u2014 claimable from tax authority",
+   "fieldname": "vat_input_account",
+   "fieldtype": "Link",
+   "label": "VAT Input (Recoverable) Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Applied automatically to all rental Sales Invoices",
+   "fieldname": "sales_tax_template",
+   "fieldtype": "Link",
+   "label": "ERPNext Sales Tax Template",
+   "options": "Sales Taxes and Charges Template"
+  },
+  {
+   "fieldname": "purchase_tax_template",
+   "fieldtype": "Link",
+   "label": "ERPNext Purchase Tax Template",
+   "options": "Purchase Taxes and Charges Template"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_filing",
+   "fieldtype": "Section Break",
+   "label": "Filing Settings"
+  },
+  {
+   "fieldname": "filing_frequency",
+   "fieldtype": "Select",
+   "label": "VAT Filing Frequency",
+   "options": "Monthly\nQuarterly\nAnnually"
+  },
+  {
+   "fieldname": "last_filing_date",
+   "fieldtype": "Date",
+   "label": "Last Filing Date"
+  },
+  {
+   "fieldname": "next_filing_date",
+   "fieldtype": "Date",
+   "label": "Next Filing Due Date"
+  }
+ ],
+ "links": [],
+ "modified": "2026-04-14 13:54:59.549711",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "VAT Configuration",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Fleet Manager"
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

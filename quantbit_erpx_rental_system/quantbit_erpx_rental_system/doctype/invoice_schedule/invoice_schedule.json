@@ -1,0 +1,183 @@
+{
+ "actions": [],
+ "autoname": "format:IS-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:12.669268",
+ "description": "Recurring invoice schedule for long-term and monthly rental contracts \u2014 auto-generates Sales Invoice on each billing date.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "rental_contract",
+  "customer",
+  "vehicle",
+  "col_break_1",
+  "billing_frequency",
+  "next_billing_date",
+  "schedule_status",
+  "section_amounts",
+  "billing_amount",
+  "vat_rate",
+  "vat_amount",
+  "col_break_2",
+  "total_billing_amount",
+  "payment_terms",
+  "section_history",
+  "total_invoices_generated",
+  "last_invoice",
+  "last_invoice_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "rental_contract",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Rental Contract",
+   "options": "Rental Contract",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rental_contract.customer",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rental_contract.vehicle",
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "label": "Vehicle",
+   "options": "Vehicle Master",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Monthly",
+   "fieldname": "billing_frequency",
+   "fieldtype": "Select",
+   "label": "Billing Frequency",
+   "options": "Monthly\nWeekly\nFortnightly\nCustom",
+   "reqd": 1
+  },
+  {
+   "fieldname": "next_billing_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Next Billing Date",
+   "reqd": 1
+  },
+  {
+   "default": "Active",
+   "fieldname": "schedule_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Schedule Status",
+   "options": "Active\nPaused\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "section_amounts",
+   "fieldtype": "Section Break",
+   "label": "Billing Amounts"
+  },
+  {
+   "fieldname": "billing_amount",
+   "fieldtype": "Currency",
+   "label": "Base Billing Amount (OMR)",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "default": "5% \u2014 Oman",
+   "fieldname": "vat_rate",
+   "fieldtype": "Select",
+   "label": "VAT Rate",
+   "options": "5% \u2014 Oman\n15% \u2014 Saudi Arabia\n0% \u2014 No VAT"
+  },
+  {
+   "fieldname": "vat_amount",
+   "fieldtype": "Currency",
+   "label": "VAT Amount (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_billing_amount",
+   "fieldtype": "Currency",
+   "label": "Total Billing Amount (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_terms",
+   "fieldtype": "Link",
+   "label": "Payment Terms",
+   "options": "Payment Entry"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_history",
+   "fieldtype": "Section Break",
+   "label": "Invoice History"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_invoices_generated",
+   "fieldtype": "Int",
+   "label": "Total Invoices Generated",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_invoice",
+   "fieldtype": "Link",
+   "label": "Last Sales Invoice",
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_invoice_date",
+   "fieldtype": "Date",
+   "label": "Last Invoice Date",
+   "read_only": 1
+  }
+ ],
+ "links": [],
+ "modified": "2026-04-14 13:55:05.679594",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Invoice Schedule",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Billing Staff",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

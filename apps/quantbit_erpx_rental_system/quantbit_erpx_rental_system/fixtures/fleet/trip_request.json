@@ -1,0 +1,110 @@
+{
+  "doctype": "DocType",
+  "name": "Trip Request",
+  "module": "ERPX Rental",
+  "naming_rule": "Expression",
+  "autoname": "format:TR-{YYYY}-{#####}",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "description": "Internal Fleet: employee trip request — approved by fleet manager, converted to Trip Log on completion.",
+  "fields": [
+    {
+      "fieldname": "requested_by",
+      "fieldtype": "Link",
+      "label": "Requested By (Employee)",
+      "options": "Employee",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "department",
+      "fieldtype": "Link",
+      "label": "Department",
+      "options": "Department"
+    },
+    {
+      "fieldname": "trip_purpose",
+      "fieldtype": "Data",
+      "label": "Trip Purpose / Destination",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "col_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "requested_date",
+      "fieldtype": "Date",
+      "label": "Requested Trip Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "requested_time",
+      "fieldtype": "Time",
+      "label": "Requested Time"
+    },
+    {
+      "fieldname": "estimated_return",
+      "fieldtype": "Datetime",
+      "label": "Estimated Return"
+    },
+    {
+      "fieldname": "col_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "preferred_vehicle_category",
+      "fieldtype": "Select",
+      "label": "Preferred Vehicle Category",
+      "options": "Any\nEconomy\nSedan\nSUV\n4x4 Off-Road\nVan"
+    },
+    {
+      "fieldname": "number_of_passengers",
+      "fieldtype": "Int",
+      "label": "Number of Passengers"
+    },
+    {
+      "fieldname": "request_status",
+      "fieldtype": "Select",
+      "label": "Request Status",
+      "options": "Pending Approval\nApproved\nRejected\nCompleted\nCancelled",
+      "default": "Pending Approval",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "section_approval",
+      "fieldtype": "Section Break",
+      "label": "Approval",
+      "collapsible": 1
+    },
+    {
+      "fieldname": "approved_by",
+      "fieldtype": "Link",
+      "label": "Approved By",
+      "options": "User"
+    },
+    {
+      "fieldname": "assigned_vehicle",
+      "fieldtype": "Link",
+      "label": "Assigned Vehicle",
+      "options": "Vehicle Master"
+    },
+    {
+      "fieldname": "assigned_driver",
+      "fieldtype": "Link",
+      "label": "Assigned Driver",
+      "options": "Driver Master"
+    },
+    {
+      "fieldname": "rejection_reason",
+      "fieldtype": "Small Text",
+      "label": "Rejection Reason",
+      "depends_on": "eval:doc.request_status=='Rejected'"
+    }
+  ],
+  "permissions": [
+    {"role": "Fleet Manager", "read": 1, "write": 1, "create": 1, "submit": 1, "cancel": 1},
+    {"role": "System Manager", "read": 1, "write": 1, "create": 1, "submit": 1, "cancel": 1, "delete": 1}
+  ]
+}

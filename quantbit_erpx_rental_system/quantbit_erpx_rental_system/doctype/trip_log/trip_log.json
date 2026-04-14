@@ -1,0 +1,181 @@
+{
+ "actions": [],
+ "autoname": "format:TL-{YYYY}-{#####}",
+ "creation": "2026-04-14 13:35:32.433861",
+ "description": "Internal Fleet: actual trip record \u2014 odometer readings, driver, route, cost per km. Linked to Trip Request.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "trip_request",
+  "vehicle",
+  "driver",
+  "col_break_1",
+  "trip_date",
+  "departure_time",
+  "return_time",
+  "trip_purpose",
+  "section_km",
+  "km_start",
+  "km_end",
+  "km_driven",
+  "col_break_2",
+  "cost_per_km",
+  "total_trip_cost",
+  "department",
+  "cost_centre",
+  "notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "trip_request",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Trip Request",
+   "options": "Trip Request"
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vehicle / Plate",
+   "options": "Vehicle Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Driver",
+   "options": "Driver Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "trip_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Trip Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "departure_time",
+   "fieldtype": "Time",
+   "label": "Departure Time"
+  },
+  {
+   "fieldname": "return_time",
+   "fieldtype": "Time",
+   "label": "Return Time"
+  },
+  {
+   "fieldname": "trip_purpose",
+   "fieldtype": "Data",
+   "label": "Trip Purpose / Destination",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_km",
+   "fieldtype": "Section Break",
+   "label": "Odometer"
+  },
+  {
+   "fieldname": "km_start",
+   "fieldtype": "Float",
+   "label": "Odometer at Start (KM)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "km_end",
+   "fieldtype": "Float",
+   "label": "Odometer at End (KM)"
+  },
+  {
+   "description": "Auto = KM End \u2212 KM Start",
+   "fieldname": "km_driven",
+   "fieldtype": "Float",
+   "label": "KM Driven",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cost_per_km",
+   "fieldtype": "Currency",
+   "label": "Cost per KM (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_trip_cost",
+   "fieldtype": "Currency",
+   "label": "Total Trip Cost (OMR)",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department (cost allocation)",
+   "options": "Department"
+  },
+  {
+   "fetch_from": "vehicle.cost_centre",
+   "fieldname": "cost_centre",
+   "fieldtype": "Link",
+   "label": "Cost Centre",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Trip Notes / Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Trip Log",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-14 13:55:04.048386",
+ "modified_by": "Administrator",
+ "module": "quantbit_erpx_rental_system",
+ "name": "Trip Log",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Fleet Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
