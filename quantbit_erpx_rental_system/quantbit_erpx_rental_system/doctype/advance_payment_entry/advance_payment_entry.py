@@ -2,85 +2,58 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe import _
 
 
 class AdvancePaymentEntry(Document):
 
     def validate(self):
         self.validate_amount()  # check amount
-        self.validate_account()  # check bank
+        self.validate_customer()  # check customer
+        self.validate_contract()  # check contract
 
-    # validate amount
     def validate_amount(self):
         if not self.advance_amount or self.advance_amount <= 0:
-            frappe.throw(_("Advance amount must be greater than 0"))
+            frappe.throw("Advance amount must be greater than zero")  # amount check
 
-    # validate bank account
-    def validate_account(self):
-        if not self.bank_account:
-            frappe.throw(_("Please select Bank/Cash Account"))
+    def validate_customer(self):
+        if not self.customer:
+            frappe.throw("Customer is required")  # customer check
 
-    # on submit
+    def validate_contract(self):
+        if not self.rental_contract:
+            frappe.throw("Rental Contract is required")  # contract check
+
     def on_submit(self):
-        je = self.create_journal_entry()
-        self.gl_journal_entry = je.name  # store JE
 
-        # link with rental contract
-        if self.rental_contract:
-            frappe.db.set_value(
-                "Rental Contract",
-                self.rental_contract,
-                "advance_journal_entry",
-                je.name
-            )
+        company = frappe.defaults.get_user_default("Company")  # get company
 
-    # get advance account safely
-    def get_advance_account(self, company):
+        if not self.bank_account:
+            frappe.throw("Bank / Cash Account is required")  # validate bank
 
-        account = frappe.db.get_value(
-            "Account",
-            {
-                "name": ["like", "Advance Rent Received%"],
-                "company": company,
-                "is_group": 0
-            },
-            "name"
-        )
+        je = frappe.new_doc("Journal Entry")  # create JE
+        je.voucher_type = "Journal Entry"  # set type
+        je.company = company  # set company
+        je.posting_date = self.payment_date  # set date
+        je.remark = f"Advance received for Rental Contract {self.rental_contract}"  # remark
 
-        if not account:
-            frappe.throw(
-                _("Please create 'Advance Rent Received' account under Current Liabilities")
-            )
-
-        return account
-
-    # create journal entry
-    def create_journal_entry(self):
-
-        company = frappe.defaults.get_user_default("Company")
-
-        debit_account = self.bank_account  # asset account
-        credit_account = self.get_advance_account(company)  # liability account
-
-        je = frappe.new_doc("Journal Entry")
-        je.voucher_type = "Journal Entry"
-        je.company = company
-        je.posting_date = self.payment_date
-
-        # debit (cash/bank)
         je.append("accounts", {
-            "account": debit_account,
-            "debit_in_account_currency": self.advance_amount
-        })
+            "account": self.bank_account,
+            "debit_in_account_currency": self.advance_amount,
+            "credit_in_account_currency": 0
+        })  # debit bank
 
-        # credit (advance liability)
         je.append("accounts", {
-            "account": credit_account,
-            "credit_in_account_currency": self.advance_amount
-        })
+            "account": "Advance Rent Received",
+            "party_type": "Customer",
+            "party": self.customer,
+            "credit_in_account_currency": self.advance_amount,
+            "debit_in_account_currency": 0,
+            "reference_type": "Rental Contract",
+            "reference_name": self.rental_contract
+        })  # credit liability
 
-        je.insert()
-        je.submit()
+        je.insert(ignore_permissions=True)  # insert JE
+        je.submit()  # submit JE
 
-        return je
+        self.gl_journal_entry = je.name  # link JE
+        self.balance_remaining = self.advance_amount  # set balance

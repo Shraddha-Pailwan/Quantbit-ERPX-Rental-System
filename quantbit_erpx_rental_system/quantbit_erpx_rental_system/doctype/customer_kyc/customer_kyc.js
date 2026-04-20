@@ -1,13 +1,12 @@
 // Copyright (c) 2026, Quantbit Technologies Pvt. Ltd.
-
 frappe.ui.form.on('Customer KYC', {
 
     refresh: function(frm) {
-        toggle_fields(frm);
+        toggle_fields(frm);  // toggle fields on load
     },
 
     customer_type: function(frm) {
-        toggle_fields(frm);
+        toggle_fields(frm);  // toggle when type changes
     },
 
     kyc_status: function(frm) {
@@ -30,6 +29,22 @@ frappe.ui.form.on('Customer KYC', {
 });
 
 
+// 🔹 Dynamic field visibility
+function toggle_fields(frm) {
+
+    const is_corporate = ["Corporate", "Broker / Travel Agency"].includes(frm.doc.customer_type);
+    const is_broker = frm.doc.customer_type === "Broker / Travel Agency";
+
+    // corporate fields
+    frm.toggle_display("company_name", is_corporate);
+    frm.toggle_display("cr_number", is_corporate);
+    frm.toggle_display("vat_registration_number", is_corporate);
+
+    // broker fields
+    frm.toggle_display("commission_type", is_broker);
+    frm.toggle_display("commission_rate", is_broker);
+    frm.toggle_display("commission_gl_account", is_broker);
+}
 
 
 function toggle_fields(frm) {

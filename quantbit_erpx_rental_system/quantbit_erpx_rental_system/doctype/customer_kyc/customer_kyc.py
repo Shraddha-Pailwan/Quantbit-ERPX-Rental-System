@@ -10,31 +10,39 @@ class CustomerKYC(Document):
 
     def validate(self):
         self.set_full_name()  # auto fill name
+
         self.validate_mobile()
         self.validate_customer_type_fields()
         self.validate_unique_individual()
+        self.validate_unique_customer()  # 🔥 added
         self.validate_blacklist()
         self.validate_duplicate_mobile()
         self.validate_numbers()
         self.validate_pdc()
         self.validate_dates()
 
-    # auto set full name
+    # ---------------- FETCH ---------------- #
+
     def set_full_name(self):
         if self.customer and not self.full_name:
             name = frappe.db.get_value("Customer", self.customer, "customer_name")
             if name:
-                self.full_name = name
+                self.full_name = name.strip()
 
-    # mobile validation
+    # ---------------- VALIDATIONS ---------------- #
+
     def validate_mobile(self):
         if not self.mobile_number:
             frappe.throw(_("Mobile Number is required"))
 
-        if self.mobile_number and len(self.mobile_number) < 8:
+        mobile = str(self.mobile_number).strip()
+
+        if not mobile.isdigit():
+            frappe.throw(_("Mobile Number must contain only digits"))
+
+        if len(mobile) < 8:
             frappe.throw(_("Enter valid Mobile Number"))
 
-    # customer type validation
     def validate_customer_type_fields(self):
 
         if self.customer_type == "Individual":
@@ -61,12 +69,24 @@ class CustomerKYC(Document):
             if self.commission_type == "Percentage of Revenue" and not self.commission_rate:
                 frappe.throw(_("Commission Rate is required"))
 
-    # blacklist validation
     def validate_blacklist(self):
         if self.kyc_status == "Blacklisted" and not self.blacklist_reason:
             frappe.throw(_("Blacklist Reason is required"))
 
-    # duplicate mobile for individual
+    # 🔥 NEW: prevent multiple KYC for same customer
+    def validate_unique_customer(self):
+        if self.customer:
+            existing = frappe.db.exists(
+                "Customer KYC",
+                {
+                    "customer": self.customer,
+                    "name": ["!=", self.name]
+                }
+            )
+
+            if existing:
+                frappe.throw(_("This customer already has a KYC record"))
+
     def validate_duplicate_mobile(self):
         if self.customer_type == "Individual" and self.mobile_number:
 
@@ -82,7 +102,6 @@ class CustomerKYC(Document):
             if existing:
                 frappe.throw(_("Mobile already used for another Individual"))
 
-    # unique individual KYC
     def validate_unique_individual(self):
         if self.customer_type == "Individual" and self.id_number:
 
@@ -98,20 +117,17 @@ class CustomerKYC(Document):
             if existing:
                 frappe.throw(_("Individual already has KYC record"))
 
-    # number validation
     def validate_numbers(self):
         if self.credit_limit is not None and self.credit_limit < 0:
             frappe.throw(_("Credit limit cannot be negative"))
 
-        if self.credit_period_days and self.credit_period_days < 0:
+        if self.credit_period_days is not None and self.credit_period_days < 0:
             frappe.throw(_("Credit period cannot be negative"))
 
-    # pdc validation
     def validate_pdc(self):
         if self.pdc_required and (not self.pdc_advance_months or self.pdc_advance_months <= 0):
             frappe.throw(_("Enter valid PDC advance months"))
 
-    # date validation (FIXED)
     def validate_dates(self):
 
         if self.licence_expiry_date:

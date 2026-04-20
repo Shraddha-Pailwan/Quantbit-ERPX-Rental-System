@@ -2,72 +2,57 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe import _
 
 
 class SecurityDepositEntry(Document):
 
     def validate(self):
         self.validate_amount()  # check amount
-        self.validate_accounts()  # check bank account
+        self.validate_customer()  # check customer
+        self.validate_contract()  # check contract
 
-    # validate deposit amount
     def validate_amount(self):
         if not self.deposit_amount or self.deposit_amount <= 0:
-            frappe.throw(_("Deposit amount must be greater than 0"))
+            frappe.throw("Deposit amount must be greater than zero")  # amount check
 
-    # validate bank account
-    def validate_accounts(self):
-        if not self.bank_account:
-            frappe.throw(_("Please select Bank/Cash Account"))
+    def validate_customer(self):
+        if not self.customer:
+            frappe.throw("Customer is required")  # customer check
 
-    # on submit create journal entry
+    def validate_contract(self):
+        if not self.rental_contract:
+            frappe.throw("Rental Contract is required")  # contract check
+
     def on_submit(self):
-        je = self.create_journal_entry()
-        self.gl_journal_entry = je.name  # store JE
 
-        # link to rental contract
-        if self.rental_contract:
-            frappe.db.set_value(
-                "Rental Contract",
-                self.rental_contract,
-                "deposit_journal_entry",
-                je.name
-            )
+        company = frappe.defaults.get_user_default("Company")  # get company
 
-    # create journal entry
-    def create_journal_entry(self):
+        if not self.bank_account:
+            frappe.throw("Bank / Cash Account is required")  # validate bank
 
-        company = frappe.defaults.get_user_default("Company")
+        je = frappe.new_doc("Journal Entry")  # create JE
+        je.voucher_type = "Journal Entry"  # set type
+        je.company = company  # set company
+        je.posting_date = self.collection_date  # set date
+        je.remark = f"Security deposit received for Rental Contract {self.rental_contract}"  # remark
 
-        debit_account = self.bank_account  # selected bank/cash
-        credit_account = frappe.db.get_value(
-    "Account",
-    {
-        "account_name": "Customer Deposit Payable",
-        "company": frappe.defaults.get_user_default("Company")
-    },
-    "name"
-)  # liability account (must exist)
-
-        je = frappe.new_doc("Journal Entry")
-        je.voucher_type = "Journal Entry"
-        je.company = company
-        je.posting_date = self.collection_date  # ✅ FIX
-
-        # debit entry
         je.append("accounts", {
-            "account": debit_account,
-            "debit_in_account_currency": self.deposit_amount
-        })
+            "account": self.bank_account,
+            "debit_in_account_currency": self.deposit_amount,
+            "credit_in_account_currency": 0
+        })  # debit bank
 
-        # credit entry
         je.append("accounts", {
-    "account": credit_account,
-    "credit_in_account_currency": self.deposit_amount
-})
+            "account": "Customer Deposit Payable",
+            "party_type": "Customer",
+            "party": self.customer,
+            "credit_in_account_currency": self.deposit_amount,
+            "debit_in_account_currency": 0,
+            "reference_type": "Rental Contract",
+            "reference_name": self.rental_contract
+        })  # credit liability
 
-        je.insert()
-        je.submit()
+        je.insert(ignore_permissions=True)  # insert JE
+        je.submit()  # submit JE
 
-        return je
+        self.gl_journal_entry = je.name  # link JE
