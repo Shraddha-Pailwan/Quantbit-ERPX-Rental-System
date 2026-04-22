@@ -51,6 +51,12 @@
   "acc_vehicle_manual",
   "acc_fuel_card",
   "acc_parking_card",
+  "post_delivery_damages_and_charges_section",
+  "missing_accessories",
+  "missing_item_count",
+  "missing_accessories_charge",
+  "column_break_lhjv",
+  "new_damage_panels",
   "section_signatures",
   "customer_acknowledged",
   "staff_signed",
@@ -355,6 +361,46 @@
    "label": "Additional Notes"
   },
   {
+   "depends_on": "eval:doc.checklist_type=='Post-Return'",
+   "description": "Auto-filled on Post-Return: lists accessories that were present at handover but missing now",
+   "fieldname": "missing_accessories",
+   "fieldtype": "Small Text",
+   "label": "Missing Accessories (vs Pre-Delivery)",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.checklist_type=='Post-Return'",
+   "fieldname": "missing_item_count",
+   "fieldtype": "Int",
+   "label": "Missing Item Count",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.checklist_type=='Post-Return'",
+   "description": "Auto-calculated: missing item count \u00d7 missing_accessory_charge from contract",
+   "fieldname": "missing_accessories_charge",
+   "fieldtype": "Currency",
+   "label": "Missing Accessories Charge (OMR)"
+  },
+  {
+   "fieldname": "post_delivery_damages_and_charges_section",
+   "fieldtype": "Section Break",
+   "label": "Post Delivery Damages and Charges"
+  },
+  {
+   "fieldname": "column_break_lhjv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.checklist_type=='Post-Return'",
+   "description": "Auto-filled on Post-Return: panels that were OK at handover but now show damage",
+   "fieldname": "new_damage_panels",
+   "fieldtype": "Small Text",
+   "label": "New Damage Detected (vs Pre-Delivery)",
+   "read_only": 1
+  },
+  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -367,7 +413,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-14 13:55:06.697993",
+ "modified": "2026-04-22 12:12:46.238528",
  "modified_by": "Administrator",
  "module": "quantbit_erpx_rental_system",
  "name": "Handover Checklist",

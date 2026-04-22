@@ -113,11 +113,20 @@
   "gross_amount",
   "vat_amount",
   "total_amount",
+  "total_fines_on_contract",
   "col_break_16",
   "advance_applied",
   "deposit_applied",
   "net_due",
   "traffic_fines_total",
+  "post_return_checklist_summary_section",
+  "checklist_missing_items",
+  "checklist_missing_item_count",
+  "checklist_missing_accessories_charge",
+  "column_break_mlxn",
+  "new_damage_panels",
+  "traffic_fines_section_section",
+  "fine_summary_html",
   "section_erp_links",
   "sales_invoice",
   "advance_journal_entry",
@@ -889,6 +898,69 @@
    "fieldtype": "Currency",
    "label": "Traffic Fines Total (OMR)",
    "options": "currency"
+  },
+  {
+   "allow_on_submit": 1,
+   "description": "Sum of all submitted Traffic Fines with decision = Charge to Customer",
+   "fieldname": "total_fines_on_contract",
+   "fieldtype": "Currency",
+   "label": "Traffic Fines Total \u2014 Charged to Customer (OMR)",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "description": "Auto-synced from the Post-Return Handover Checklist on save",
+   "fieldname": "post_return_checklist_summary_section",
+   "fieldtype": "Section Break",
+   "label": "Post Return Checklist Summary"
+  },
+  {
+   "allow_on_submit": 1,
+   "description": "Auto-synced from Post-Return Checklist",
+   "fieldname": "checklist_missing_items",
+   "fieldtype": "Small Text",
+   "label": "Missing Accessories",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "checklist_missing_item_count",
+   "fieldtype": "Int",
+   "label": "Missing Item Count",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "checklist_missing_accessories_charge",
+   "fieldtype": "Currency",
+   "label": "Missing Accessories Charge (OMR)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_mlxn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "description": "Auto-synced from Post-Return Checklist",
+   "fieldname": "new_damage_panels",
+   "fieldtype": "Small Text",
+   "label": "New Damage Panels",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "traffic_fines_section_section",
+   "fieldtype": "Section Break",
+   "label": "Traffic Fines section",
+   "read_only": 1
+  },
+  {
+   "fieldname": "fine_summary_html",
+   "fieldtype": "HTML",
+   "label": "Traffic Fine Summary"
   }
  ],
  "is_submittable": 1,
@@ -906,7 +978,7 @@
    "link_fieldname": "rental_contract"
   }
  ],
- "modified": "2026-04-21 16:20:46.942935",
+ "modified": "2026-04-22 11:59:44.143962",
  "modified_by": "Administrator",
  "module": "quantbit_erpx_rental_system",
  "name": "Rental Contract",

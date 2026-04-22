@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"Z8ziLS41nv\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quantbit ERPX Rental System</span>\",\"col\":12}},{\"id\":\"ACzldhrYZr\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"aR_OodUFuF\",\"type\":\"card\",\"data\":{\"card_name\":\"Rental Operations\",\"col\":3}},{\"id\":\"ny_MUh49SJ\",\"type\":\"card\",\"data\":{\"card_name\":\"Fleet Operations\",\"col\":3}},{\"id\":\"QZp2nn4TCA\",\"type\":\"card\",\"data\":{\"card_name\":\"Rental Masters\",\"col\":3}},{\"id\":\"iB4JuRbkDz\",\"type\":\"card\",\"data\":{\"card_name\":\"Fleet Masters\",\"col\":3}}]",
+ "content": "[{\"id\":\"Z8ziLS41nv\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quantbit ERPX Rental System</span>\",\"col\":12}},{\"id\":\"ACzldhrYZr\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"aR_OodUFuF\",\"type\":\"card\",\"data\":{\"card_name\":\"Rental Operations\",\"col\":4}},{\"id\":\"QZp2nn4TCA\",\"type\":\"card\",\"data\":{\"card_name\":\"Rental Masters\",\"col\":4}},{\"id\":\"6NfhLoJ4yB\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports and Analysis\",\"col\":4}}]",
  "creation": "2026-04-14 14:56:18.479990",
  "custom_blocks": [],
  "docstatus": 0,
@@ -13,373 +13,6 @@
  "is_hidden": 0,
  "label": "Quantbit ERPX Rental System",
  "links": [
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Operations",
-   "link_count": 23,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Maintenance Schedule",
-   "link_count": 0,
-   "link_to": "Maintenance Schedule",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Maintenance Record",
-   "link_count": 0,
-   "link_to": "Maintenance Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Insurance Claim",
-   "link_count": 0,
-   "link_to": "Insurance Claim",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Traffic Fine",
-   "link_count": 0,
-   "link_to": "Traffic Fine",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Mileage Log",
-   "link_count": 0,
-   "link_to": "Mileage Log",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Fine Dispute",
-   "link_count": 0,
-   "link_to": "Fine Dispute",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Breakdown Event",
-   "link_count": 0,
-   "link_to": "Breakdown Event",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "WhatsApp Alert Log",
-   "link_count": 0,
-   "link_to": "WhatsApp Alert Log",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Invoice Schedule",
-   "link_count": 0,
-   "link_to": "Invoice Schedule",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Owner Payout Entry",
-   "link_count": 0,
-   "link_to": "Owner Payout Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Handover Checklist",
-   "link_count": 0,
-   "link_to": "Handover Checklist",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Fuel Entry",
-   "link_count": 0,
-   "link_to": "Fuel Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Advance Payment Entry",
-   "link_count": 0,
-   "link_to": "Advance Payment Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Trip Log",
-   "link_count": 0,
-   "link_to": "Trip Log",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Vehicle Assignment",
-   "link_count": 0,
-   "link_to": "Vehicle Assignment",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Trip Request",
-   "link_count": 0,
-   "link_to": "Trip Request",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "PDC Register",
-   "link_count": 0,
-   "link_to": "PDC Register",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Rental Contract",
-   "link_count": 0,
-   "link_to": "Rental Contract",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Trade In Register",
-   "link_count": 0,
-   "link_to": "Trade In Register",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "ROP Import Log",
-   "link_count": 0,
-   "link_to": "ROP Import Log",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Vehicle Document",
-   "link_count": 0,
-   "link_to": "Vehicle Document",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Vehicle Disposal",
-   "link_count": 0,
-   "link_to": "Vehicle Disposal",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Security Deposit Entry",
-   "link_count": 0,
-   "link_to": "Security Deposit Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Fleet Masters",
-   "link_count": 4,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Vehicle Master",
-   "link_count": 0,
-   "link_to": "Vehicle Master",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Driver Master",
-   "link_count": 0,
-   "link_to": "Driver Master",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Spare Part",
-   "link_count": 0,
-   "link_to": "Spare Part",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Alert Rule",
-   "link_count": 0,
-   "link_to": "Alert Rule",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Fleet Operations",
-   "link_count": 7,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Trip Request",
-   "link_count": 0,
-   "link_to": "Trip Request",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Trip Log",
-   "link_count": 0,
-   "link_to": "Trip Log",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Maintenance Schedule",
-   "link_count": 0,
-   "link_to": "Maintenance Schedule",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Maintenance Record",
-   "link_count": 0,
-   "link_to": "Maintenance Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Vehicle Assignment",
-   "link_count": 0,
-   "link_to": "Vehicle Assignment",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Fuel Entry",
-   "link_count": 0,
-   "link_to": "Fuel Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Vehicle Document",
-   "link_count": 0,
-   "link_to": "Vehicle Document",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
   {
    "hidden": 0,
    "is_query_report": 0,
@@ -567,9 +200,68 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports and Analysis",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Rental Summary",
+   "link_count": 0,
+   "link_to": "Rental Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Customer Register",
+   "link_count": 0,
+   "link_to": "Customer Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Vehicle Rental Register",
+   "link_count": 0,
+   "link_to": "Vehicle Rental Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Vehicle Utilisation Report",
+   "link_count": 0,
+   "link_to": "Vehicle Utilisation Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Vehicle Profit & Loss Report",
+   "link_count": 0,
+   "link_to": "Vehicle Profit & Loss Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-04-21 16:52:40.063647",
+ "modified": "2026-04-22 17:38:44.919357",
  "modified_by": "Administrator",
  "module": "quantbit_erpx_rental_system",
  "name": "Quantbit ERPX Rental System",

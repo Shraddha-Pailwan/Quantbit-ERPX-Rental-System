@@ -22,9 +22,12 @@
   "col_break_2",
   "country_of_residence",
   "nationality",
-  "col_break_3",
+  "tab_address",
   "residential_address",
+  "residential_address_descriptive",
+  "column_break_spus",
   "work_address",
+  "workoffice_address_descriptive",
   "documents_tab",
   "section_identity",
   "id_document_type",
@@ -62,6 +65,7 @@
   "signatory_email",
   "authorization_document",
   "authorization_valid_until",
+  "tab_billing",
   "section_broker",
   "iata_licence_number",
   "commission_type",
@@ -183,18 +187,16 @@
    "options": "Email"
   },
   {
-   "fieldname": "col_break_3",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "residential_address",
-   "fieldtype": "Small Text",
-   "label": "Residential Address / \u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0633\u0643\u0646\u064a"
+   "fieldtype": "Link",
+   "label": "Residential Address / \u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0633\u0643\u0646\u064a",
+   "options": "Address"
   },
   {
    "fieldname": "work_address",
-   "fieldtype": "Small Text",
-   "label": "Work / Office Address / \u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0639\u0645\u0644"
+   "fieldtype": "Link",
+   "label": "Work / Office Address / \u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0639\u0645\u0644",
+   "options": "Address"
   },
   {
    "depends_on": "eval:doc.customer_type=='Individual'",
@@ -506,10 +508,36 @@
    "fieldname": "documents_tab",
    "fieldtype": "Tab Break",
    "label": "Documents"
+  },
+  {
+   "fieldname": "tab_address",
+   "fieldtype": "Tab Break",
+   "label": "Address"
+  },
+  {
+   "fieldname": "tab_billing",
+   "fieldtype": "Tab Break",
+   "label": "Broker Setting and Billing"
+  },
+  {
+   "fieldname": "residential_address_descriptive",
+   "fieldtype": "Small Text",
+   "label": "Residential Address Descriptive",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_spus",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "workoffice_address_descriptive",
+   "fieldtype": "Small Text",
+   "label": "Work/Office Address Descriptive",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2026-04-21 17:29:20.789340",
+ "modified": "2026-04-22 15:18:38.211539",
  "modified_by": "Administrator",
  "module": "quantbit_erpx_rental_system",
  "name": "Customer KYC",

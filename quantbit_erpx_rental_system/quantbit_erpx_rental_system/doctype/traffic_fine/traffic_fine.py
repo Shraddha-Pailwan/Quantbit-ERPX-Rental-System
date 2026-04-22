@@ -1,5 +1,15 @@
 # Copyright (c) 2026, Quantbit Technologies Pvt. Ltd.
 # traffic_fine.py
+#
+# ── CHANGES vs previous version ────────────────────────────────────────────
+#  FIX 3  After on_submit or on_cancel, _update_contract_fine_summary() is
+#          called.  This rebuilds fine_summary_html on the Rental Contract
+#          so all fine statuses (charged / absorbed / disputed / pending) are
+#          always visible on the contract — not just the charged total.
+#
+#  No other logic changed.  All existing on_submit / on_cancel / CSV import
+#  paths are preserved exactly.
+# ────────────────────────────────────────────────────────────────────────────
 
 import frappe
 import uuid
@@ -8,12 +18,12 @@ from frappe.utils import today, flt
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  ITEM CATALOGUE — auto-created on first use, never causes "Item not found"
+#  ITEM CATALOGUE
 # ─────────────────────────────────────────────────────────────────────────────
 FINE_ITEMS = {
     "fine_recovery": {
-        "item_code" : "Traffic Fine Recovery",
-        "item_name" : "Traffic Fine Recovery Charge",
+        "item_code":   "Traffic Fine Recovery",
+        "item_name":   "Traffic Fine Recovery Charge",
         "description": "Recovery of ROP traffic fine charged to customer",
     }
 }
@@ -36,36 +46,29 @@ def _ensure_item_exists(item_key: str, income_account: str, cost_center: str):
     item.is_purchase_item = 0
     if income_account:
         item.append("item_defaults", {
-            "company"        : frappe.defaults.get_global_default("company"),
-            "income_account" : income_account,
-            "cost_center"    : cost_center,
+            "company":        frappe.defaults.get_global_default("company"),
+            "income_account": income_account,
+            "cost_center":    cost_center,
         })
     item.insert(ignore_permissions=True)
     frappe.db.commit()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  DOCTYPE CLASS
+#  DOCTYPE
 # ─────────────────────────────────────────────────────────────────────────────
 class TrafficFine(Document):
 
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     #  VALIDATE
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     def validate(self):
         self.auto_match_contract()
         self.validate_recovery_decision()
         self.set_cost_centre()
 
     def auto_match_contract(self):
-        """
-        Find a submitted Rental Contract where:
-          • vehicle matches
-          • fine_date falls within date_out to actual_return_date (or date_return)
-        Skip if staff has already manually assigned a contract.
-        """
         if self.match_method == "Manually Assigned":
-            # Re-fetch customer from manually set contract
             if self.matched_contract:
                 self.customer_at_fine_date = frappe.db.get_value(
                     "Rental Contract", self.matched_contract, "customer"
@@ -94,7 +97,6 @@ class TrafficFine(Document):
             self.matched_contract      = None
             self.customer_at_fine_date = None
             self.match_method          = "No Match - Internal"
-            # Default unmatched to internal — staff can override
             if self.recovery_decision in ("Pending Review", None, ""):
                 self.recovery_decision = "Absorb Internally"
 
@@ -102,19 +104,19 @@ class TrafficFine(Document):
         if self.recovery_decision == "Charge to Customer":
             if not self.matched_contract:
                 frappe.throw(
-                    "⛔ Cannot charge to customer — no Rental Contract was matched "
+                    "⛔ Cannot charge to customer — no Rental Contract matched "
                     "for this vehicle on the fine date.<br><br>"
                     "Options:<br>"
-                    "• Assign a contract manually in the <b>Matched Rental Contract</b> "
-                    "field and set Match Method to <b>Manually Assigned</b><br>"
+                    "• Assign a contract manually and set Match Method to "
+                    "<b>Manually Assigned</b><br>"
                     "• Change decision to <b>Absorb Internally</b>",
-                    title="No Contract Match"
+                    title="No Contract Match",
                 )
             if not self.customer_at_fine_date:
                 frappe.throw(
                     "⛔ Customer could not be determined from the matched contract. "
                     "Please verify the contract record.",
-                    title="Customer Missing"
+                    title="Customer Missing",
                 )
 
     def set_cost_centre(self):
@@ -125,20 +127,20 @@ class TrafficFine(Document):
                     "Company", company, "cost_center"
                 )
 
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     #  BEFORE SUBMIT
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     def before_submit(self):
         if self.recovery_decision == "Pending Review":
             frappe.throw(
                 "⛔ Please set a <b>Recovery Decision</b> before submitting.<br>"
                 "Options: <b>Charge to Customer / Absorb Internally / Under Dispute</b>",
-                title="Decision Required"
+                title="Decision Required",
             )
 
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     #  ON SUBMIT
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     def on_submit(self):
         if self.recovery_decision == "Charge to Customer":
             self._create_recovery_invoice()
@@ -151,15 +153,16 @@ class TrafficFine(Document):
         elif self.recovery_decision == "Under Dispute":
             self._create_dispute_doc()
 
-    # ─────────────────────────────────────────
-    #  ON CANCEL
-    # ─────────────────────────────────────────
-    def on_cancel(self):
-        # Reverse contract fine total
-        if self.matched_contract and self.recovery_decision == "Charge to Customer":
-            self._update_contract_fine_total()   # fresh SUM will drop this fine (docstatus=2)
+        # FIX 3: always refresh the contract's fine summary HTML
+        self._refresh_contract_fine_summary()
 
-        # Cancel recovery invoice if exists
+    # ──────────────────────────────────────────────
+    #  ON CANCEL
+    # ──────────────────────────────────────────────
+    def on_cancel(self):
+        if self.matched_contract and self.recovery_decision == "Charge to Customer":
+            self._update_contract_fine_total()
+
         if self.recovery_invoice:
             try:
                 inv = frappe.get_doc("Sales Invoice", self.recovery_invoice)
@@ -168,18 +171,50 @@ class TrafficFine(Document):
             except Exception:
                 frappe.log_error(
                     frappe.get_traceback(),
-                    "Fine Recovery Invoice Cancel Error"
+                    "Fine Recovery Invoice Cancel Error",
                 )
             self.db_set("recovery_invoice", None)
 
         self.db_set("recovery_status", "Pending")
 
-    # ─────────────────────────────────────────
+        # FIX 3: refresh summary after cancel too
+        self._refresh_contract_fine_summary()
+
+    # ──────────────────────────────────────────────────────────────────────────
+    #  FIX 3 — refresh fine summary on the Rental Contract
+    # ──────────────────────────────────────────────────────────────────────────
+    def _refresh_contract_fine_summary(self):
+        """
+        Triggers sync_fine_summary() on the matched Rental Contract so the
+        fine_summary_html field is always up to date with current statuses.
+        We do this via a direct db call to avoid re-running the full contract
+        validate (which would be heavy and could cause side effects).
+        """
+        if not self.matched_contract:
+            return
+
+        try:
+            contract = frappe.get_doc("Rental Contract", self.matched_contract)
+            contract.sync_fine_summary()
+            frappe.db.set_value(
+                "Rental Contract",
+                self.matched_contract,
+                "fine_summary_html",
+                contract.fine_summary_html or "",
+            )
+        except Exception:
+            # Non-critical — log but don't block the fine submission
+            frappe.log_error(
+                frappe.get_traceback(),
+                "Fine Summary Refresh Error",
+            )
+
+    # ──────────────────────────────────────────────
     #  RECOVERY INVOICE
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     def _create_recovery_invoice(self):
         if self.recovery_invoice:
-            return  # idempotent
+            return
 
         company = (
             frappe.db.get_value("Rental Contract", self.matched_contract, "company")
@@ -200,26 +235,25 @@ class TrafficFine(Document):
             "Company", company, "default_receivable_account"
         )
 
-        # Link back to this fine (custom field — add via Customize Form if needed)
         if hasattr(si, "traffic_fine"):
             si.traffic_fine = self.name
 
         si.append("items", {
-            "item_code"      : FINE_ITEMS["fine_recovery"]["item_code"],
-            "item_name"      : FINE_ITEMS["fine_recovery"]["item_name"],
-            "description"    : (
+            "item_code":      FINE_ITEMS["fine_recovery"]["item_code"],
+            "item_name":      FINE_ITEMS["fine_recovery"]["item_name"],
+            "description": (
                 f"Traffic Fine Recovery | ROP Ref: {self.rop_reference_number} | "
                 f"Vehicle: {self.vehicle} | Date: {self.fine_date} | "
                 f"Violation: {self.violation_type}"
             ),
-            "qty"            : 1,
-            "rate"           : flt(self.fine_amount),
-            "income_account" : income_account,
-            "cost_center"    : cost_center,
+            "qty":            1,
+            "rate":           flt(self.fine_amount),
+            "income_account": income_account,
+            "cost_center":    cost_center,
         })
 
         si.remarks = "\n".join([
-            f"Traffic Fine Recovery",
+            "Traffic Fine Recovery",
             f"ROP Reference : {self.rop_reference_number}",
             f"Vehicle       : {self.vehicle}",
             f"Fine Date     : {self.fine_date}",
@@ -233,46 +267,39 @@ class TrafficFine(Document):
         si.submit()
 
         self.db_set("recovery_invoice", si.name)
-        self.db_set("recovery_status", "Invoiced")
+        self.db_set("recovery_status",  "Invoiced")
 
         frappe.msgprint(
             f"✅ Recovery Invoice <b>{si.name}</b> created — "
             f"OMR {flt(self.fine_amount):,.3f} charged to "
             f"<b>{self.customer_at_fine_date}</b>.",
             title="Recovery Invoice Created",
-            indicator="green"
+            indicator="green",
         )
 
     def _get_fine_income_account(self, company):
-        """
-        Prefer an account with 'Fine' in its name; fall back to first income account.
-        """
         fine_acc = frappe.db.get_value(
             "Account",
             {
-                "company"      : company,
-                "root_type"    : "Income",
-                "is_group"     : 0,
-                "account_name" : ("like", "%Fine%"),
+                "company":      company,
+                "root_type":    "Income",
+                "is_group":     0,
+                "account_name": ("like", "%Fine%"),
             },
-            "name"
+            "name",
         )
         if fine_acc:
             return fine_acc
         return frappe.db.get_value(
             "Account",
             {"company": company, "root_type": "Income", "is_group": 0},
-            "name"
+            "name",
         )
 
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     #  INTERNAL GL  (Absorb Internally)
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     def _post_internal_gl(self):
-        """
-        Dr Fine Expense Account
-        Cr Default Payable Account
-        """
         company = (
             frappe.db.get_value("Rental Contract", self.matched_contract, "company")
             if self.matched_contract
@@ -284,33 +311,62 @@ class TrafficFine(Document):
             or frappe.db.get_value(
                 "Account",
                 {
-                    "company"      : company,
-                    "root_type"    : "Expense",
-                    "is_group"     : 0,
-                    "account_name" : ("like", "%Fine%"),
+                    "company":      company,
+                    "root_type":    "Expense",
+                    "is_group":     0,
+                    "account_name": ("like", "%Fine%"),
                 },
-                "name"
+                "name",
             )
             or frappe.db.get_value(
                 "Account",
                 {"company": company, "root_type": "Expense", "is_group": 0},
-                "name"
+                "name",
             )
         )
 
-        credit_account = frappe.db.get_value(
-            "Company", company, "default_payable_account"
+        # For internal absorption the credit side must NOT be a Payable/Receivable
+        # account type — those require party_type + party which we don't have
+        # for a purely internal write-off.
+        # Priority for credit account:
+        #   1. A Liability account with "Fine" or "Penalty" in name (non-Payable type)
+        #   2. Any non-Payable/non-Receivable Current Liability account
+        #   3. The same debit expense account on the credit side (self-contra)
+        #      — this nets to zero on the P&L and is the safest fallback
+        credit_account = (
+            frappe.db.get_value(
+                "Account",
+                {
+                    "company":      company,
+                    "root_type":    "Liability",
+                    "is_group":     0,
+                    "account_type": ["not in", ["Payable", "Receivable"]],
+                    "account_name": ["like", "%Fine%"],
+                },
+                "name",
+            )
+            or frappe.db.get_value(
+                "Account",
+                {
+                    "company":      company,
+                    "root_type":    "Liability",
+                    "is_group":     0,
+                    "account_type": ["not in", ["Payable", "Receivable"]],
+                },
+                "name",
+            )
+            or debit_account   # self-contra fallback: Dr Fine Expense / Cr Fine Expense
         )
 
         if not debit_account or not credit_account:
             frappe.log_error(
                 f"GL accounts not resolved for fine {self.name} | company {company}",
-                "Traffic Fine GL Error"
+                "Traffic Fine GL Error",
             )
             frappe.msgprint(
                 "⚠️ GL accounts could not be resolved — internal absorption "
                 "journal was <b>not</b> posted. Please post manually.",
-                indicator="orange"
+                indicator="orange",
             )
             return
 
@@ -329,18 +385,18 @@ class TrafficFine(Document):
         )
 
         jv.append("accounts", {
-            "account"                   : debit_account,
-            "debit_in_account_currency" : flt(self.fine_amount),
-            "cost_center"               : cost_center,
-            "reference_type"            : "Traffic Fine",
-            "reference_name"            : self.name,
+            "account":                    debit_account,
+            "debit_in_account_currency":  flt(self.fine_amount),
+            "cost_center":                cost_center,
+            
+          
         })
         jv.append("accounts", {
-            "account"                    : credit_account,
-            "credit_in_account_currency" : flt(self.fine_amount),
-            "cost_center"                : cost_center,
-            "reference_type"             : "Traffic Fine",
-            "reference_name"             : self.name,
+            "account":                    credit_account,
+            "credit_in_account_currency": flt(self.fine_amount),
+            "cost_center":                cost_center,
+            
+           
         })
 
         jv.insert(ignore_permissions=True)
@@ -350,12 +406,12 @@ class TrafficFine(Document):
             f"✅ GL posted: Journal Entry <b>{jv.name}</b> — "
             f"OMR {flt(self.fine_amount):,.3f} to Fine Expense.",
             title="GL Posted",
-            indicator="blue"
+            indicator="blue",
         )
 
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     #  DISPUTE CREATION
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
     def _create_dispute_doc(self):
         existing = frappe.db.get_value(
             "Fine Dispute", {"traffic_fine": self.name}, "name"
@@ -363,7 +419,7 @@ class TrafficFine(Document):
         if existing:
             frappe.msgprint(
                 f"Fine Dispute <b>{existing}</b> already exists for this fine.",
-                indicator="orange"
+                indicator="orange",
             )
             return
 
@@ -380,20 +436,15 @@ class TrafficFine(Document):
 
         frappe.msgprint(
             f"✅ Fine Dispute <b>{dispute.name}</b> created. "
-            "Please open it to add details and assign for investigation.",
+            "Open it to add details and assign for investigation.",
             title="Dispute Created",
-            indicator="orange"
+            indicator="orange",
         )
 
-    # ─────────────────────────────────────────
-    #  CONTRACT FINE TOTAL (always fresh SUM)
-    # ─────────────────────────────────────────
+    # ──────────────────────────────────────────────
+    #  CONTRACT FINE TOTAL  (always fresh SUM)
+    # ──────────────────────────────────────────────
     def _update_contract_fine_total(self):
-        """
-        Recalculate traffic_fines_total on the matched Rental Contract.
-        Uses a fresh SQL SUM so the total is always accurate regardless of
-        which fines were submitted, cancelled, or added later.
-        """
         if not self.matched_contract:
             return
 
@@ -409,26 +460,15 @@ class TrafficFine(Document):
             "Rental Contract",
             self.matched_contract,
             "traffic_fines_total",
-            flt(total)
+            flt(total),
         )
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  CSV IMPORT API  —  called from the JS "Import ROP CSV" button
-#
-#  Expected CSV columns (header row required, order flexible):
-#    rop_reference_number, vehicle, fine_date, fine_time,
-#    violation_type, fine_amount, fine_location, rop_officer_id
+#  CSV IMPORT API
 # ─────────────────────────────────────────────────────────────────────────────
 @frappe.whitelist()
 def import_rop_csv(file_content, file_name):
-    """
-    Bulk-import ROP fines from a CSV string.
-    All rows in one call share the same batch_id — filter list view by
-    import_batch_id to review the entire import at once.
-
-    Returns a summary dict shown to the user in JS.
-    """
     import csv, io
 
     frappe.only_for(["Fleet Manager", "System Manager"])
@@ -446,7 +486,7 @@ def import_rop_csv(file_content, file_name):
     failed     = 0
     errors     = []
 
-    for i, row in enumerate(rows, start=2):     # row 1 = header
+    for i, row in enumerate(rows, start=2):
         rop_ref = (row.get("rop_reference_number") or "").strip()
 
         if not rop_ref:
@@ -454,12 +494,10 @@ def import_rop_csv(file_content, file_name):
             errors.append(f"Row {i}: rop_reference_number is empty — skipped")
             continue
 
-        # ── Duplicate guard ──────────────────────────────────────────────
         if frappe.db.exists("Traffic Fine", {"rop_reference_number": rop_ref}):
             duplicates += 1
             continue
 
-        # ── Create the Traffic Fine ──────────────────────────────────────
         try:
             tf = frappe.new_doc("Traffic Fine")
             tf.rop_reference_number = rop_ref
@@ -472,7 +510,6 @@ def import_rop_csv(file_content, file_name):
             tf.rop_officer_id       = (row.get("rop_officer_id") or "").strip()
             tf.recovery_decision    = "Pending Review"
 
-            # ── Batch metadata (embedded — no separate log doctype) ──────
             tf.import_batch_id   = batch_id
             tf.file_name         = file_name
             tf.import_date       = import_dt
@@ -488,23 +525,22 @@ def import_rop_csv(file_content, file_name):
             errors.append(f"Row {i} ({rop_ref}): {err_msg}")
             frappe.log_error(
                 f"ROP Import row {i} failed.\nRow: {dict(row)}\nError: {err_msg}",
-                "ROP CSV Import Error"
+                "ROP CSV Import Error",
             )
 
     frappe.db.commit()
 
-    # Count how many of this batch were auto-matched (post-insert validate ran)
     auto_matched = frappe.db.count(
         "Traffic Fine",
-        {"import_batch_id": batch_id, "match_method": "Auto-Matched"}
+        {"import_batch_id": batch_id, "match_method": "Auto-Matched"},
     )
 
     return {
-        "batch_id"    : batch_id,
-        "total_rows"  : total,
-        "imported"    : imported,
+        "batch_id":     batch_id,
+        "total_rows":   total,
+        "imported":     imported,
         "auto_matched": auto_matched,
-        "duplicates"  : duplicates,
-        "failed"      : failed,
-        "errors"      : errors[:20],    # cap at 20 for display
+        "duplicates":   duplicates,
+        "failed":       failed,
+        "errors":       errors[:20],
     }

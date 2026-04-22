@@ -198,7 +198,7 @@
    "fieldname": "cost_centre",
    "fieldtype": "Link",
    "label": "Cost Centre",
-   "options": "Vehicle"
+   "options": "Cost Center"
   },
   {
    "fieldname": "internal_notes",
@@ -218,7 +218,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-14 13:55:08.071245",
+ "modified": "2026-04-22 11:49:01.359831",
  "modified_by": "Administrator",
  "module": "quantbit_erpx_rental_system",
  "name": "Traffic Fine",

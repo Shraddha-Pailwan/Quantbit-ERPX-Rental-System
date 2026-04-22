@@ -62,3 +62,71 @@ function toggle_fields(frm) {
     frm.toggle_display("commission_rate", is_broker);
     frm.toggle_display("commission_gl_account", is_broker);
 }
+
+frappe.ui.form.on('Customer KYC', {
+
+    residential_address: function(frm) {
+        set_address(frm, 'residential_address', 'residential_address_descriptive');
+    },
+
+    work_address: function(frm) {
+        set_address(frm, 'work_address', 'workoffice_address_descriptive');
+    },
+
+    refresh: function(frm) {
+        set_address(frm, 'residential_address', 'residential_address_descriptive');
+        set_address(frm, 'work_address', 'workoffice_address_descriptive');
+    }
+});
+
+
+function set_address(frm, link_field, text_field) {
+
+    let address_name = frm.doc[link_field];
+
+    if (!address_name) {
+        frm.set_value(text_field, "");
+        return;
+    }
+
+    frappe.call({
+        method: "frappe.client.get",
+        args: {
+            doctype: "Address",
+            name: address_name
+        },
+        callback: function(r) {
+
+            if (!r.message) return;
+
+            let a = r.message;
+            let lines = [];
+
+            // 🔹 Split address_line1 (fix comma issue)
+            if (a.address_line1) {
+                lines.push(...a.address_line1.split(","));
+            }
+
+            // 🔹 Split address_line2
+            if (a.address_line2) {
+                lines.push(...a.address_line2.split(","));
+            }
+
+            // 🔹 City + State
+            let city_line = [a.city, a.state].filter(Boolean).join(", ");
+            if (city_line) lines.push(city_line);
+
+            // 🔹 Pincode
+            if (a.pincode) lines.push(a.pincode);
+
+            // 🔹 Country
+            if (a.country) lines.push(a.country);
+
+            // 🔹 Clean lines
+            lines = lines.map(l => l.trim()).filter(l => l);
+
+            // 🔥 FINAL OUTPUT (multiline text)
+            frm.set_value(text_field, lines.join("\n"));
+        }
+    });
+}
