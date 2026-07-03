@@ -265,5 +265,12 @@ fixtures = [
         "filters": [
             ["module", "=", "quantbit_erpx_rental_system"]
         ]
+    },
+    {
+        "doctype": "Custom Field",
+        "filters": [
+            ["dt", "=", "Payment Entry"],
+            ["fieldname", "=", "custom_rental_contract"]
+        ]
     }
 ]
